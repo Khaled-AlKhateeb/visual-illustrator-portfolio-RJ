@@ -1,0 +1,64 @@
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+  gap: 2rem;
+}
+
+.upload-input {
+  display: none;
+}
+
+.upload-label {
+  cursor: pointer;
+  font-size: 1.3rem;
+  border: 1px solid black;
+  background-color: lightgrey;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 15rem;
+  text-align: center;
+}
+
+.upload-btn {
+  padding: 0.5rem;
+  font-size: 1.3rem;
+  width: 15rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+}
+
+.progress {
+  width: 30%;
+}
+
+.uploaded {
+  font-size: 1.1rem;
+  color: green;
+  font-weight: 700;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.media-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.artstation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+}
