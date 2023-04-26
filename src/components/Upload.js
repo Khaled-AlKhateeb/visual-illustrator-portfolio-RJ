@@ -34,12 +34,12 @@ function Upload() {
         const resetPercent = async (percent) => {
           await delay(2000);
 
-          if (percent == 100) {
+          if (percent === 100) {
             setFile('');
             setPercent(0);
           };
         }
-        if (percent == 100) {
+        if (percent === 100) {
           uploadDone.innerHTML = 'Uploaded Successfully';
           setTimeout(function () {
             uploadDone.innerHTML = '';
