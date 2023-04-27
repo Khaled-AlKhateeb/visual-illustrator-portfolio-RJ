@@ -1,16 +1,18 @@
-import { useState } from 'react';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, app } from '../firebaseConfig';
+import { useState, useRef, useEffect } from 'react';
+import { getStorage, ref, uploadBytesResumable, listAll, deleteObject, app } from '../firebaseConfig';
 import Progress from './ProgressBar';
 import '../../src/App.css';
 
 function Upload() {
   const [file, setFile] = useState('');
   const [percent, setPercent] = useState(0);
+  const [deleteName, setDeleteName] = useState('');
   const storage = getStorage(app);
+  const storageDelete = getStorage();
   const handleChange = (event) => {
     setFile(event.target.files[0]);
   }
-  
+
   const uploadDone = document.getElementById('uploadDone');
 
   function handleUpload() {
@@ -20,7 +22,6 @@ function Upload() {
 
     const storageRef = ref(storage, `/files/kheryan/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
-    console.log(storageRef.child);
 
     uploadTask.on(
       "state_changed",
@@ -33,7 +34,6 @@ function Upload() {
         const delay = ms => new Promise(res => setTimeout(res, ms));
         const resetPercent = async (percent) => {
           await delay(2000);
-
           if (percent === 100) {
             setFile('');
             setPercent(0);
@@ -47,17 +47,42 @@ function Upload() {
         }
         resetPercent(percent);
       },
-      (err) => console.log(err),
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
-        });
-      }
-      );
-    }
+      (err) => alert(err),
+    );
+  }
+
+  const listRef = ref(storage, '/files/kheryan/');
+  const deleteItems = useRef(null);
+
+  useEffect(() => {
+    listAll(listRef).then((res) => {
+      res.items.forEach((itemRef) => {
+        const item = document.createElement('option');
+        item.innerHTML = itemRef.name;
+        item.value = itemRef.name;
+        deleteItems.current.appendChild(item);
+      })
+    })
+  }, [deleteItems, listRef]);
+
+  const handleNameSelect = () => {
+    setDeleteName(deleteItems.current.value);
+  }
+  const handleDelete = () => {
+    const desertRef = ref(storageDelete, `/files/kheryan/${deleteName}`);
+    console.log(desertRef)
+    deleteObject(desertRef).then(() => {
+      uploadDone.innerHTML = `${deleteName} deleted successfully`;
+      setTimeout(function () {
+        uploadDone.innerHTML = '';
+      }, 4000);
+    }).catch((err) => {
+      alert(err);
+    })
+  }
 
   const selectImageText = file.name ? file.name : 'Select Image';
-  
+
   return (
     <div className="upload-container">
       <label className="upload-label" htmlFor="uploadInput">
@@ -67,6 +92,12 @@ function Upload() {
       <button className="upload-btn" onClick={handleUpload}>Upload to Firebase</button>
       <Progress animated percent={percent} />
       <p id='uploadDone' className="uploaded"></p>
+      <div className="delete-container">
+        <select name="deleteOptions" ref={deleteItems} onChange={handleNameSelect}>
+          <option value="" hidden>Select image to delete</option>
+        </select>
+        <button type='button' onClick={handleDelete}>delete</button>
+      </div>
     </div>
   );
 }

@@ -9,12 +9,18 @@ function ListFiles() {
 
   listAll(listRef).then((res) => {
     res.items.forEach((itemRef) => {
-      const container = document.getElementById('imageContainer');
+      const theFalconLore = document.getElementById('theFalconLore');
+      const hanselGretel = document.getElementById('hanselGretel');
       const newImage = document.createElement('img');
       getDownloadURL(ref(storage, `/files/kheryan/${itemRef.name}`)).then((url) => {
         newImage.setAttribute('id', itemRef.name);
+        newImage.classList.add('artwork-image');
         newImage.src = url;
-        container.appendChild(newImage);
+        if (itemRef.name.includes('thefalconlore')) {
+          theFalconLore.appendChild(newImage);
+        } else if (itemRef.name.includes('hanselgretel')) {
+          hanselGretel.appendChild(newImage);
+        }
       })
     })
   });
@@ -27,7 +33,7 @@ function ListFiles() {
           <Link to="/about">About</Link>
         </div>
         <div className="title-container">
-          <h1>Rami Juma</h1>
+          <img src="title-Artwork.png" alt="page title" className="title-image" />
           <h4>Visual Development Artist</h4>
         </div>
         <div className="media-container">
@@ -39,6 +45,16 @@ function ListFiles() {
         </div>
       </header>
       <div id='imageContainer' className='image-container'>
+        <div>
+          <h2>The Falcon Lore</h2>
+          <div id='theFalconLore' className='the-falcon-lore'>
+          </div>
+        </div>
+        <div>
+          <h2>Hansel & Gretel</h2>
+          <div id='hanselGretel' className='hansel-gretel'>
+          </div>
+        </div>
       </div>
     </div>
   );

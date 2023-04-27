@@ -3,6 +3,10 @@ a {
   color: black;
 }
 
+body {
+  font-family: 'Quicksand', sans-serif;
+}
+
 .upload-container {
   display: flex;
   flex-direction: column;
@@ -47,31 +51,41 @@ a {
 .main-container {
   display: flex;
   flex-direction: column;
-  background-color: rgb(209, 209, 209);
+  background-color: #dde1e7;
 }
 
 .header {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 4rem;
+  margin: 4rem;
+  background-image: url('./assets/illustration-Artwork.png');
+  background-size: 80%;
+  background-position: 50% 20%;
+  background-repeat: no-repeat;
 }
 
 .links-container {
   display: flex;
-  gap: 3rem;
+  gap: 5rem;
+  font-size: 1.3rem;
 }
 
 .title-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   text-align: center;
+}
+
+.title-image {
+  width: 30%;
+  margin-bottom: -2.5rem;
 }
 
 .media-container {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .artstation-btn {
@@ -90,5 +104,21 @@ a {
   flex-direction: column;
   width: 90%;
   margin: auto;
+  gap: 5rem;
+  text-align: center;
+  margin-top: 5rem;
+}
+
+.artwork-image {
+  width: 100%;
+}
+
+.the-falcon-lore {
+  display: grid;
+  grid-template-columns: 49% 49%;
+  justify-content: space-between;
+  background-color: #fff;
+  margin: 0;
+  padding: 1rem;
   gap: 1rem;
 }
