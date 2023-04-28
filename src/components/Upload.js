@@ -96,7 +96,7 @@ function Upload() {
         <select name="deleteOptions" ref={deleteItems} onChange={handleNameSelect}>
           <option value="" hidden>Select image to delete</option>
         </select>
-        <button type='button' onClick={handleDelete}>delete</button>
+        <button className="delete-btn" type='button' onClick={handleDelete}>delete</button>
       </div>
     </div>
   );
