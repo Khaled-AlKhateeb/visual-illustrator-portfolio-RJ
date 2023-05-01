@@ -72,13 +72,79 @@ body {
 }
 
 .header {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 18.75rem;
   padding: 6% 4%;
   background-color: #dde1e7;
+}
+
+.menu-btn {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  height: 1.67rem;
+  top: 30px;
+  right: 30px;
+  border: none;
+  background-color: transparent;
+}
+
+.first-stripe,
+.second-stripe,
+.third-stripe {
+  position: absolute;
+  height: 0.25rem;
+  width: 2rem;
+  right: 10px;
+  background-color: #3a523e;
+  transition: all 1s ease-in-out;
+}
+
+.first-stripe {
+  top: 0;
+}
+
+.second-stripe {
+  top: 0.7rem;
+}
+
+.third-stripe {
+  bottom: 0;
+}
+
+.close-first {
+  transform: rotate(45deg);
+  transform-origin: left;
+}
+
+.close-second {
+  opacity: 0;
+}
+
+.close-third {
+  transform: rotate(-45deg);
+  transform-origin: left;
+}
+
+.mobile-menu {
+  position: fixed;
+  right: -50%;
+  top: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  font-size: 1.4rem;
+  background-color: #dde1e7;
+  width: 50%;
+  height: 40vh;
+  text-align: center;
+  border: 1px solid black;
+  transition: all 1s ease-in-out;
 }
 
 .links-container {
@@ -196,6 +262,20 @@ body {
 }
 
 @media screen and (max-width: 1000px) {
+  .header-main-container {
+    position: relative;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  .header {
+    padding-inline: 0;
+  }
+
+  .menu-btn {
+    display: flex;
+  }
+
   .title-image {
     width: 100%;
     height: 200px;
