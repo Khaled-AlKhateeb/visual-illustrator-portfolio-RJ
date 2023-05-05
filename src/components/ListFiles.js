@@ -1,41 +1,56 @@
-import { useRef } from 'react';
-import { getStorage, ref, listAll, getDownloadURL } from '../firebaseConfig';
+import { useEffect, useState } from 'react';
+import Image from './Image';
+import { Link } from 'react-router-dom';
 
 function ListFiles() {
-  const storage = getStorage();
-  const listRef = ref(storage, '/files/kheryan/');
-  const theFalconLore = useRef(null);
-  const hanselGretel = useRef(null);
+  const [storedArray, setStoredArray] = useState([]);
 
-  listAll(listRef).then((res) => {
-    res.items.forEach((itemRef) => {
-      const newImage = document.createElement('div');
-      getDownloadURL(ref(storage, `/files/kheryan/${itemRef.name}`)).then((url) => {
-        newImage.classList.add('artwork-image');
-        newImage.style.backgroundImage = `url(${url})`;
-        if (itemRef.name.includes('thefalconlore')) {
-          theFalconLore.current.appendChild(newImage);
-        } else if (itemRef.name.includes('hanselgretel')) {
-          hanselGretel.current.appendChild(newImage);
-        }
-      })
-    })
-  });
+  useEffect(() => {
+    const newArray = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      newArray.push(JSON.parse(localStorage.getItem(`image-${i}`)));
+    }
+    setStoredArray(newArray);
+  }, []);
+
+  const categoryArr = [];
+
+  storedArray.map((item, index) => {
+    const parts = item.name.split('_');
+    const title = parts[0].split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    if (!categoryArr.includes(title)) {
+      categoryArr.push(title);
+    }
+    storedArray[index].category = categoryArr.indexOf(title);
+    return null;
+  })
 
   return (
-    <div className="main-container">
-      <div id='imageContainer' className='image-container'>
-        <div>
-          <h2 className="category-title">The Falcon Lore</h2>
-          <div ref={theFalconLore} className='the-falcon-lore'>
+    <div className='main-container'>
+      {categoryArr.map((cat, index) => {
+        return (
+          <div key={index}>
+            <h2 className='category-title'>{cat}</h2>
+            <div className='category-container'>
+              {storedArray.map((img, item) => {
+                if (img.category === index) {
+                  return (
+                    <Link
+                      className='image-container'
+                      to='/slider'
+                      key={item}
+                      state={{url: img.url}}
+                    >
+                      <Image imageUrl={img.url} imageName={img.name} />
+                    </Link>
+                  )
+                }
+                return null;
+              })}
+            </div>
           </div>
-        </div>
-        <div>
-          <h2 className="category-title">Hansel & Gretel</h2>
-          <div ref={hanselGretel} className='hansel-gretel'>
-          </div>
-        </div>
-      </div>
+        )
+      })}
     </div>
   );
 }

@@ -21,7 +21,7 @@ function Header() {
       setSecondStripe('second-stripe');
       setThirdStripe('third-stripe')
       toggleRef.current.style.display = '';
-      toggleRef.current.style.right = '-50%';
+      toggleRef.current.style.right = '-100%';
     }
   }
 
