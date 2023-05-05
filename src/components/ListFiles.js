@@ -39,7 +39,7 @@ function ListFiles() {
                       className='image-container'
                       to='/slider'
                       key={item}
-                      state={{url: img.url}}
+                      state={{ name: img.name, array: storedArray }}
                     >
                       <Image imageUrl={img.url} imageName={img.name} />
                     </Link>
