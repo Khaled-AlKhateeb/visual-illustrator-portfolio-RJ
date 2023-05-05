@@ -269,7 +269,38 @@ body {
 
 .slider-main-container {
   position: absolute;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
   top: 0;
+}
+
+.slider-container {
+  position: relative;
+  width: 90%;
+  height: 90%;
+  margin: auto;
+}
+
+.slider-close {
+  position: absolute;
+  border: none;
+}
+
+.next-slide,
+.prev-slide {
+  border: none;
+  position: absolute;
+  top: 50%;
+  height: 4rem;
+}
+
+.next-slide {
+  right: 0;
+}
+
+.prev-slide {
+  left: 0;
 }
 
 @media screen and (max-width: 1000px) {
