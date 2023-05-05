@@ -273,12 +273,11 @@ body {
   width: 100vw;
   height: 100vh;
   top: 0;
+  background-color: white;
 }
 
 .slider-container {
-  position: relative;
-  width: 90%;
-  height: 90%;
+  width: 100%;
   margin: auto;
 }
 
@@ -291,16 +290,17 @@ body {
 .prev-slide {
   border: none;
   position: absolute;
+  background-color: transparent;
   top: 50%;
   height: 4rem;
 }
 
 .next-slide {
-  right: 0;
+  right: 10px;
 }
 
 .prev-slide {
-  left: 0;
+  left: 10px;
 }
 
 @media screen and (max-width: 1000px) {

@@ -37,7 +37,7 @@ function Slider() {
     <div className="slider-main-container">
       <div className="slider-container">
         <button className="slider-close" onClick={sliderClose}>X</button>
-        <button className="next-slide" onClick={nextImg}><FaChevronRight /></button>
+        <button className="next-slide" onClick={nextImg}><FaChevronRight size={56} /></button>
         <Image imageUrl={allImgs[currentIndex].url} imageName={allImgs[currentIndex].name} />
         <button className="prev-slide" onClick={prevImg}><FaChevronLeft /></button>
       </div>
