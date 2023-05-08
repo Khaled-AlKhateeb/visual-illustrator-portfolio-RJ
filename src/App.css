@@ -15,10 +15,8 @@ body {
 .upload-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 2rem;
-  height: 100vh;
 }
 
 .upload-input {
@@ -202,7 +200,6 @@ body {
   display: inline-block;
   height: 20rem;
   text-align: center;
-  margin-top: 1rem;
 }
 
 .category-container {
@@ -290,17 +287,17 @@ body {
 .prev-slide {
   border: none;
   position: absolute;
-  background-color: transparent;
+  background-color: lightgray;
   top: 50%;
   height: 4rem;
 }
 
 .next-slide {
-  right: 10px;
+  right: 0;
 }
 
 .prev-slide {
-  left: 10px;
+  left: 0;
 }
 
 @media screen and (max-width: 1000px) {

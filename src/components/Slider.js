@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import Image from './Image';
 import { useState } from 'react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaRegWindowClose } from 'react-icons/fa';
 
 function Slider() {
   const navigate = useNavigate();
@@ -36,10 +36,10 @@ function Slider() {
   return ( 
     <div className="slider-main-container">
       <div className="slider-container">
-        <button className="slider-close" onClick={sliderClose}>X</button>
+        <button className="slider-close" onClick={sliderClose}><FaRegWindowClose size={40} /></button>
         <button className="next-slide" onClick={nextImg}><FaChevronRight size={56} /></button>
         <Image imageUrl={allImgs[currentIndex].url} imageName={allImgs[currentIndex].name} />
-        <button className="prev-slide" onClick={prevImg}><FaChevronLeft /></button>
+        <button className="prev-slide" onClick={prevImg}><FaChevronLeft size={56} /></button>
       </div>
     </div>
   )

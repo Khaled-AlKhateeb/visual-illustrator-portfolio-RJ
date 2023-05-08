@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { getStorage, ref, uploadBytesResumable, listAll, deleteObject, app } from '../firebaseConfig';
 import Progress from './ProgressBar';
 import '../../src/App.css';
-import setLocalStorage from '../localStorage';
 
 function Upload() {
   const [file, setFile] = useState('');
@@ -50,7 +49,6 @@ function Upload() {
       },
       (err) => alert(err),
     );
-    setLocalStorage();
   }
 
   const listRef = ref(storage, '/files/kheryan/');
@@ -72,13 +70,11 @@ function Upload() {
   }
   const handleDelete = () => {
     const desertRef = ref(storageDelete, `/files/kheryan/${deleteName}`);
-    console.log(desertRef)
     deleteObject(desertRef).then(() => {
       uploadDone.innerHTML = `${deleteName} deleted successfully`;
       setTimeout(function () {
         uploadDone.innerHTML = '';
       }, 4000);
-      setLocalStorage();
     }).catch((err) => {
       alert(err);
     })
