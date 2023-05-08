@@ -5,11 +5,7 @@ import { Link } from 'react-router-dom';
 function ListFiles() {
   const [storedArray, setStoredArray] = useState([]);
   useEffect(() => {
-    const newArray = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      newArray.push(JSON.parse(localStorage.getItem(`image-${i}`)));
-    }
-    setStoredArray(newArray);
+    setStoredArray(JSON.parse(localStorage.getItem('Storage')));
   }, []);
 
   const categoryArr = [];
