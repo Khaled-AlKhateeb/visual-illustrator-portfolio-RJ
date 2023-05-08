@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 function ListFiles() {
   const [storedArray, setStoredArray] = useState([]);
-
   useEffect(() => {
     const newArray = [];
     for (let i = 0; i < localStorage.length; i++) {
