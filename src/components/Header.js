@@ -28,13 +28,15 @@ function Header() {
   return (
       <div className="header-main-container">
         <div className="mobile-menu" ref={toggleRef} >
-          <Link to="/contact" onClick={toggleMenu}>Contact</Link>
-          <Link to="/about" onClick={toggleMenu}>About</Link>
-          <SocialIcon url='https://www.instagram.com/ramijuma/' bgColor='#00000000' fgColor='#3a523e' />
-          <SocialIcon url='https://www.linkedin.com/in/ramijuma/' bgColor='#00000000' fgColor='#3a523e' />
-          <a className="artstation-btn" href='https://www.artstation.com/ramijuma'>
-            <img className="artstation" src={artstation} alt='artstation logo' />
-          </a>
+          <div className="mobile-menu-container">
+            <Link to="/contact" onClick={toggleMenu} className="mobile-link">Contact</Link>
+            <Link to="/about" onClick={toggleMenu} className="mobile-link">About</Link>
+            <SocialIcon url='https://www.instagram.com/ramijuma/' bgColor='#dde1e7' fgColor='#3a523e' style={{ height: 60, width: 60 }} />
+            <SocialIcon url='https://www.linkedin.com/in/ramijuma/' bgColor='#dde1e7' fgColor='#3a523e' style={{ height: 60, width: 60 }} />
+            <a className="artstation-btn" href='https://www.artstation.com/ramijuma'>
+              <img className="artstation" src={artstation} alt='artstation logo' />
+            </a>
+          </div>
         </div>
             <header className="header">
         <button className="menu-btn" onClick={toggleMenu}>

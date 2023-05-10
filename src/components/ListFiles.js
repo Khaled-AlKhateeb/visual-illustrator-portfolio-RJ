@@ -36,7 +36,7 @@ function ListFiles() {
                       key={item}
                       state={{ name: img.name, array: storedArray }}
                     >
-                      <Image imageUrl={img.url} imageName={img.name} />
+                      <Image imageUrl={img.url} imageName={img.name} class='artwork-image' />
                     </Link>
                   )
                 }
