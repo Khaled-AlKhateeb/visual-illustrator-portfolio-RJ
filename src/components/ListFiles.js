@@ -20,6 +20,17 @@ function ListFiles() {
     return null;
   })
 
+  function theFalconLoreFirst(array, item) {
+    const index = array.indexOf(item);
+    if (index > 0) {
+      array.splice(index, 1);
+      array.unshift(item);
+    }
+    return array;
+  }
+
+  theFalconLoreFirst(categoryArr, 'The Falcon Lore');
+  
   return (
     <div className='main-container'>
       {categoryArr.map((cat, index) => {
