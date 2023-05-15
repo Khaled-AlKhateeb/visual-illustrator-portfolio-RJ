@@ -319,11 +319,14 @@ body {
 .prev-slide {
   border: none;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #d3d3d380;
   color: white;
   top: 45%;
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   border-radius: 50%;
 }
 
@@ -357,6 +360,10 @@ body {
     display: flex;
   }
 
+  .mobile-menu {
+    background-color: #ffffffff;
+  }
+
   .title-image {
     width: 100%;
     height: 120px;
@@ -373,6 +380,21 @@ body {
 
   .media-container {
     display: none;
+  }
+
+  .category-container {
+    padding: 1rem 0;
+    margin:  0;
+    width: 100vw;
+  }
+
+  .image-container {
+    height: fit-content;
+  }
+
+  .artwork-image {
+    width: 100%;
+    object-fit: contain;
   }
 
   .slider-container {
