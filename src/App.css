@@ -12,6 +12,11 @@ body {
   background-color: #dde1e7;
 }
 
+.header-main-container {
+  max-width: 1366px;
+  margin: auto;
+}
+
 .upload-container {
   display: flex;
   flex-direction: column;
@@ -136,11 +141,11 @@ body {
   width: 100%;
   height: 100vh;
   text-align: center;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .animate {
-  animation: fadeInOut 0.5s;
+  animation: fadeInOut 0.25s;
 }
 
 @keyframes fadeInOut {
@@ -154,7 +159,7 @@ body {
 }
 
 .deanimate {
-  animation: fadeOutIn 0.5s;
+  animation: fadeOutIn 0.25s;
 }
 
 @keyframes fadeOutIn {
@@ -237,6 +242,8 @@ body {
   text-align: center;
   gap: 3rem;
   margin-bottom: 5rem;
+  max-width: 1366px;
+  margin: auto;
 }
 
 .image-container {
@@ -381,6 +388,7 @@ body {
     position: static;
     padding-inline: 0;
     align-items: baseline;
+    min-height: 10rem;
   }
 
   .menu-btn {
@@ -392,13 +400,14 @@ body {
   }
 
   .title-image {
+    margin-top: 1.5rem;
     width: 100%;
     height: 100px;
     object-fit: cover;
   }
 
   .position-title {
-    margin-top: 0;
+    margin-top: -1rem;
     font-size: 1.1rem;
   }
 
@@ -410,6 +419,10 @@ body {
     display: none;
   }
 
+  .main-container {
+    gap: 1.5rem;
+  }
+
   .category-container {
     padding: 1rem 0;
     margin:  0;
@@ -418,6 +431,7 @@ body {
 
   .category-title {
     font-size: 1.1rem;
+    margin-bottom: 0;
   }
 
   .image-container {
@@ -447,8 +461,14 @@ body {
   }
 }
 
-@media screen and (max-height: 300px) {
+@media screen and (max-height: 500px) {
   .mobile-menu {
     overflow-y: scroll;
+  }
+}
+
+@media screen and (min-width: 2000px) {
+  .main-container {
+    max-width: 1920px;
   }
 }
