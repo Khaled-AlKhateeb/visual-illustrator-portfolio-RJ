@@ -16,12 +16,16 @@ function Header() {
       setThirdStripe('third-stripe close-third');
       toggleRef.current.style.display = 'flex';
       toggleRef.current.style.right = '0';
+      toggleRef.current.classList.remove('deanimate');
+      toggleRef.current.classList.add('animate');
     } else {
       setFirstStripe('first-stripe');
       setSecondStripe('second-stripe');
       setThirdStripe('third-stripe')
       toggleRef.current.style.display = '';
       toggleRef.current.style.right = '-100%';
+      toggleRef.current.classList.remove('animate');
+      toggleRef.current.classList.add('deanimate');
     }
   }
 
@@ -31,8 +35,8 @@ function Header() {
           <div className="mobile-menu-container">
             <Link to="/contact" onClick={toggleMenu} className="mobile-link">Contact</Link>
             <Link to="/about" onClick={toggleMenu} className="mobile-link">About</Link>
-            <SocialIcon url='https://www.instagram.com/ramijuma/' bgColor='#dde1e7' fgColor='#3a523e' style={{ height: 60, width: 60 }} />
-            <SocialIcon url='https://www.linkedin.com/in/ramijuma/' bgColor='#dde1e7' fgColor='#3a523e' style={{ height: 60, width: 60 }} />
+            <SocialIcon url='https://www.instagram.com/ramijuma/' bgColor='#fff' fgColor='#3a523e' style={{ height: 60, width: 60 }} />
+            <SocialIcon url='https://www.linkedin.com/in/ramijuma/' bgColor='#fff' fgColor='#3a523e' style={{ height: 60, width: 60 }} />
             <a className="artstation-btn" href='https://www.artstation.com/ramijuma'>
               <img className="artstation" src={artstation} alt='artstation logo' />
             </a>

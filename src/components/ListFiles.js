@@ -30,7 +30,7 @@ function ListFiles() {
   }
 
   theFalconLoreFirst(categoryArr, 'The Falcon Lore');
-  
+  console.log(categoryArr); 
   return (
     <div className='main-container'>
       {categoryArr.map((cat, index) => {
