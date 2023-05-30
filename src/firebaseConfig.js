@@ -1,5 +1,13 @@
 import { initializeApp } from "firebase/app";
-import { getStorage, listAll, ref, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {
+  getStorage,
+  listAll,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+  deleteObject
+} from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC-vvJT8oz34ogGrhWd0i1dCOBO8D55ttw",
@@ -11,4 +19,16 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-export { getStorage, listAll, ref, getDownloadURL, uploadBytesResumable, deleteObject, app };
+const db = getFirestore(app);
+export {
+  getStorage,
+  listAll,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+  deleteObject,
+  app,
+  db,
+  collection,
+  getDocs
+};

@@ -1,12 +1,15 @@
-import { useState, useRef, useEffect } from 'react';
-import { getStorage, ref, uploadBytesResumable, listAll, deleteObject, app } from '../firebaseConfig';
+import { useState, useRef } from 'react';
+import { getStorage, ref, uploadBytesResumable, deleteObject, app } from '../firebaseConfig';
 import Progress from './ProgressBar';
 import '../../src/App.css';
 
-function Upload() {
+const Upload = () => {
+
   const [file, setFile] = useState('');
   const [percent, setPercent] = useState(0);
   const [deleteName, setDeleteName] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const categoryInput = useRef(null);
   const storage = getStorage(app);
   const storageDelete = getStorage();
   const handleChange = (event) => {
@@ -15,12 +18,16 @@ function Upload() {
 
   const uploadDone = document.getElementById('uploadDone');
 
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  }
+
   function handleUpload() {
     if (!file) {
       alert("Please choose a file first!")
     }
 
-    const storageRef = ref(storage, `/files/kheryan/${file.name}`);
+    const storageRef = ref(storage, `/Data/${inputValue}/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -43,6 +50,7 @@ function Upload() {
           uploadDone.innerHTML = 'Uploaded Successfully';
           setTimeout(function () {
             uploadDone.innerHTML = '';
+            categoryInput.current.value = '';
           }, 4000);
         }
         resetPercent(percent);
@@ -51,25 +59,13 @@ function Upload() {
     );
   }
 
-  const listRef = ref(storage, '/files/kheryan/');
   const deleteItems = useRef(null);
-
-  useEffect(() => {
-    listAll(listRef).then((res) => {
-      res.items.forEach((itemRef) => {
-        const item = document.createElement('option');
-        item.innerHTML = itemRef.name;
-        item.value = itemRef.name;
-        deleteItems.current.appendChild(item);
-      })
-    })
-  }, [deleteItems, listRef]);
-
+    
   const handleNameSelect = () => {
     setDeleteName(deleteItems.current.value);
   }
   const handleDelete = () => {
-    const desertRef = ref(storageDelete, `/files/kheryan/${deleteName}`);
+    const desertRef = ref(storageDelete, `/Data/kheryan/${deleteName}`);
     deleteObject(desertRef).then(() => {
       uploadDone.innerHTML = `${deleteName} deleted successfully`;
       setTimeout(function () {
@@ -88,6 +84,7 @@ function Upload() {
         {selectImageText}
         <input className="upload-input" id="uploadInput" type="file" accept="" onChange={handleChange} />
       </label>
+      <input className="upload-category" type="text" value={inputValue} ref={categoryInput} onChange={handleInputChange} placeholder='Category name' />
       <button className="upload-btn" onClick={handleUpload}>Upload to Firebase</button>
       <Progress animated percent={percent} />
       <p id='uploadDone' className="uploaded"></p>

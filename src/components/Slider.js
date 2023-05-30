@@ -81,7 +81,7 @@ function Slider() {
       {showButtons && (
         <>
           <button className="slider-close" ref={(el) => buttonsRef.current.push(el)} onClick={sliderClose}><GrClose className="close-icon" /></button>
-          <button className="next-slide" ref={(el) => buttonsRef.current.push(el)} onClick={nextImg}><BsChevronRight className="chev-right" /></button>
+          <button className="next-slide" ref={(el) => buttonsRef.current.push(el)} onClick={nextImg}><BsChevronRight className="chev-right" /><BsChevronRight className="outer-right" /></button>
           <button className="prev-slide" ref={(el) => buttonsRef.current.push(el)} onClick={prevImg}><BsChevronLeft className="chev-left" /></button>
         </>
       )}

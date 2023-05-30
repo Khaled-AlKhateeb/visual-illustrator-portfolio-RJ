@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 
 function Header() {
   const toggleRef = useRef(null);
+  const menuBtn = useRef(null);
   const [firstStripe, setFirstStripe] = useState('first-stripe');
   const [secondStripe, setSecondStripe] = useState('second-stripe');
   const [thirdStripe, setThirdStripe] = useState('third-stripe');
@@ -18,6 +19,7 @@ function Header() {
       toggleRef.current.style.right = '0';
       toggleRef.current.classList.remove('deanimate');
       toggleRef.current.classList.add('animate');
+      menuBtn.current.style.position = 'fixed';
     } else {
       setFirstStripe('first-stripe');
       setSecondStripe('second-stripe');
@@ -26,6 +28,7 @@ function Header() {
       toggleRef.current.style.right = '-100%';
       toggleRef.current.classList.remove('animate');
       toggleRef.current.classList.add('deanimate');
+      menuBtn.current.style.position = 'absolute';
     }
   }
 
@@ -43,7 +46,7 @@ function Header() {
           </div>
         </div>
             <header className="header">
-        <button className="menu-btn" onClick={toggleMenu}>
+        <button className="menu-btn" ref={menuBtn} onClick={toggleMenu}>
           <div className={firstStripe} />
           <div className={secondStripe} />
           <div className={thirdStripe} />
