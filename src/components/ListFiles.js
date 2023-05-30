@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 const ListFiles = () => {
   const categorys = useSelector((state) => state.categoryData);
-  console.log(categorys);
 
   return (
     <div className='main-container'>

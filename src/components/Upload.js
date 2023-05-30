@@ -1,10 +1,13 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { getStorage, ref, uploadBytesResumable, deleteObject, app } from '../firebaseConfig';
 import Progress from './ProgressBar';
 import '../../src/App.css';
+import { useSelector } from 'react-redux';
 
 const Upload = () => {
-
+  const categoryNames = useSelector((state) => state.categoryData);
+  const [allCat, setAllCat] = useState([]);
+  const [allImages, setAllImages] = useState([]);
   const [file, setFile] = useState('');
   const [percent, setPercent] = useState(0);
   const [deleteName, setDeleteName] = useState('');
@@ -14,8 +17,21 @@ const Upload = () => {
   const storageDelete = getStorage();
   const handleChange = (event) => {
     setFile(event.target.files[0]);
-  }
-
+  };
+  
+  useEffect(() => {
+    const tempCat = [];
+    categoryNames.names.map((item) => {
+      tempCat.push(item.name);
+      setAllCat(tempCat);
+      const tempArr = [];
+      item.images.map((image) => {
+        tempArr.push({ imageName: image, catName: item.name })
+        setAllImages(tempArr);
+      })
+    })
+  }, [categoryNames]);
+  console.log(allCat)
   const uploadDone = document.getElementById('uploadDone');
 
   const handleInputChange = (event) => {
@@ -64,7 +80,9 @@ const Upload = () => {
   const handleNameSelect = () => {
     setDeleteName(deleteItems.current.value);
   }
+
   const handleDelete = () => {
+    
     const desertRef = ref(storageDelete, `/Data/kheryan/${deleteName}`);
     deleteObject(desertRef).then(() => {
       uploadDone.innerHTML = `${deleteName} deleted successfully`;
@@ -78,6 +96,8 @@ const Upload = () => {
 
   const selectImageText = file.name ? file.name : 'Select Image';
 
+  const renderOptions = allCat.map((cat, index) => <option key={index} value={cat}>{cat}</option>);
+ 
   return (
     <div className="upload-container">
       <label className="upload-label" htmlFor="uploadInput">
@@ -90,8 +110,12 @@ const Upload = () => {
       <p id='uploadDone' className="uploaded"></p>
       <div className="delete-container">
         <select name="deleteOptions" ref={deleteItems} onChange={handleNameSelect}>
-          <option value="" hidden>Select image to delete</option>
+          <option value="" hidden>Select Category</option>
+          {renderOptions}
         </select>
+        <div>
+          
+        </div>
         <button className="delete-btn" type='button' onClick={handleDelete}>delete</button>
       </div>
     </div>
