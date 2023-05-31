@@ -17,21 +17,28 @@ function App() {
   const dispatch = useDispatch();
 
   listAll(listRef).then((res) => {
+    const promises = [];
     res.prefixes.forEach((itemRef) => {
       const itemImages = [];
       const listImages = ref(storage, `/Data/${itemRef.name}`);
-      listAll(listImages).then((result) => {
+      const promise = listAll(listImages).then(async (result) => {
+        const imagePromises = [];
         result.items.forEach((imageRef) => {
-          getDownloadURL(ref(storage, `/Data/${itemRef.name}/${imageRef.name}`))
-          .then((url) =>  ({
-            name: imageRef.name,
-            url: url,
-          }))
-          itemImages.push(imageRef.name);
+          const imagePromise = getDownloadURL(ref(storage, `/Data/${itemRef.name}/${imageRef.name}`))
+            .then((url) => {
+              itemImages.push({
+                name: imageRef.name,
+                url: url,
+              });
+            });
+          imagePromises.push(imagePromise);
         });
-        dispatch(setData({name: itemRef.name, images: itemImages}));
-      })
+        await Promise.all(imagePromises);
+        dispatch(setData({ name: itemRef.name, images: itemImages }));
+      });
+      promises.push(promise);
     });
+    return Promise.all(promises);
   });
 
   return (
