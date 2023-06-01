@@ -10,7 +10,7 @@ import {
 } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC-vvJT8oz34ogGrhWd0i1dCOBO8D55ttw",
+  apiKey: process.env.REACT_APP_API_KEY,
   authDomain: "image-uploader-c8255.firebaseapp.com",
   projectId: "image-uploader-c8255",
   storageBucket: "image-uploader-c8255.appspot.com",

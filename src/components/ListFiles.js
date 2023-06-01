@@ -1,38 +1,45 @@
-//import { useEffect, useState } from 'react';
-//import Image from './Image';
-//import { Link } from 'react-router-dom';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Image from './Image';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const ListFiles = () => {
-  const categorys = useSelector((state) => state.categoryData);
+  const data = useSelector((state) => state.categoryData);
+  const [storedArray, setStoredArray] = useState([]);
+
+  useEffect(() => {
+    const arr = [];
+    data.names.map((cat) => {
+      cat.images.map((img) => {
+        arr.push(img);
+      });
+    })
+    setStoredArray(arr);
+  }, [data.names]);
 
   return (
     <div className='main-container'>
-      {/*{categoryArr.map((cat, index) => {
+      {data.names.map((cat, index) => {
         return (
           <div key={index}>
-            <h2 className='category-title'>{cat}</h2>
-            <div className='category-container'>*/}
-              {/*{storedArray.map((img, item) => {
-                if (img.category === index) {
-                  return (
-                    <Link
-                      className='image-container'
-                      to='/slider'
-                      key={item}
-                      state={{ name: img.name, array: storedArray }}
-                    >
-                      <Image imageUrl={img.url} imageName={img.name} class='artwork-image' />
-                    </Link>
-                  )
-                }
-                return null;
-              })}*/}
-            {/*</div>
+            <h2 className='category-title'>{cat.name}</h2>
+            <div className='category-container'>
+              {cat.images.map((img, item) => {
+                return (
+                  <Link
+                    className='image-container'
+                    to='/slider'
+                    key={item}
+                    state={{ name: img.name, array: storedArray }}
+                  >
+                    <Image imageUrl={img.url} imageName={img.name} class='artwork-image' />
+                  </Link>
+                )
+              })}
+            </div>
           </div>
         )
-      })}*/}
+      })}
     </div>
   );
 }

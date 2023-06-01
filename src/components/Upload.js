@@ -9,6 +9,8 @@ import AlertDialog from './DeleteConfirmation';
 const Upload = () => {
   const categoryNames = useSelector((state) => state.categoryData);
   const dispatch = useDispatch();
+  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState('');
   const [entryList, setEntryList] = useState([]);
   const [file, setFile] = useState('');
@@ -18,7 +20,16 @@ const Upload = () => {
   const categoryInput = useRef(null);
   const storage = getStorage(app);
   const storageDelete = getStorage();
-  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password === process.env.REACT_APP_UPLOAD_PASSWORD) {
+      setIsLoggedIn(true);
+    } else {
+      alert('Incorrect password. Please try again.');
+    }
+  };
+
   useEffect(() => {
     const categorys = categoryNames.names.map((cat) => cat.name);
     setEntryList(categorys);
@@ -112,7 +123,7 @@ const Upload = () => {
 
         return <div key={index} className="delete-item-container">
           <img className="delete-item" src={image.url} alt={image.name} />
-          <AlertDialog delete={handleDelete}/>
+          <AlertDialog delete={handleDelete} />
         </div>
       });
     }
@@ -121,38 +132,50 @@ const Upload = () => {
 
   return (
     <div className="upload-container">
-      <div>
-        <h3>Upload Images</h3>
-        <div className="create-container">
-          <input className="upload-category" type="text" value={inputValue} ref={categoryInput} onChange={handleInputChange} placeholder='New Category Name' />
-          <button className="add-category-btn" onClick={handleCreateEntry}>Create</button>
-        </div>
-      </div>
-      <label className="upload-label" htmlFor="uploadInput">
-        {selectImageText}
-        <input className="upload-input" id="uploadInput" type="file" accept="" onChange={handleChange} />
-      </label>
-      <select className="delete-options" value={selectedEntry} onChange={handleSelectChange}>
-        <option value="" hidden>Select a Category</option>
-        {entryList.map((entry, index) => (
-          <option key={index} value={entry}>
-            {entry}
-          </option>
-        ))}
-      </select>
-      <button className="upload-btn" onClick={handleUpload}>Upload to Firebase</button>
-      <Progress animated percent={percent} />
-      <p id='uploadDone' className="uploaded"></p>
-      <div className="delete-main-container">
-        <h3>Delete Images</h3>
-        <select className="delete-options" ref={deleteItems} onChange={handleNameSelect}>
-          <option value="" hidden>Select Category</option>
-          {renderOptions}
-        </select>
-        <div className="delete-container">
-          {renderImages}
-        </div>
-      </div>
+      {isLoggedIn ? (
+        <>
+          <div>
+            <h3>Upload Images</h3>
+            <div className="create-container">
+              <input className="upload-category" type="text" value={inputValue} ref={categoryInput} onChange={handleInputChange} placeholder='New Category Name' />
+              <button className="add-category-btn" onClick={handleCreateEntry}>Create</button>
+            </div>
+          </div><label className="upload-label" htmlFor="uploadInput">
+            {selectImageText}
+            <input className="upload-input" id="uploadInput" type="file" accept="" onChange={handleChange} />
+          </label><select className="delete-options" value={selectedEntry} onChange={handleSelectChange}>
+            <option value="" hidden>Select a Category</option>
+            {entryList.map((entry, index) => (
+              <option key={index} value={entry}>
+                {entry}
+              </option>
+            ))}
+          </select><button className="upload-btn" onClick={handleUpload}>Upload to Firebase</button><Progress animated percent={percent} /><p id='uploadDone' className="uploaded"></p><div className="delete-main-container">
+            <h3>Delete Images</h3>
+            <select className="delete-options" ref={deleteItems} onChange={handleNameSelect}>
+              <option value="" hidden>Select Category</option>
+              {renderOptions}
+            </select>
+            <div className="delete-container">
+              {renderImages}
+            </div>
+          </div>
+        </>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <div className="create-container">
+            <input
+              type="password"
+              autoComplete="new-password"
+              className="upload-category"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button className="add-category-btn" type="submit">Submit</button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
