@@ -148,8 +148,8 @@ body {
   position: absolute;
   display: none;
   flex-direction: column;
-  height: 1.67rem;
-  width: 3rem;
+  height: 1.25rem;
+  width: 2.25rem;
   top: 30px;
   right: 30px;
   border: none;
@@ -160,8 +160,8 @@ body {
 .second-stripe,
 .third-stripe {
   position: absolute;
-  height: 0.25rem;
-  width: 2rem;
+  height: 0.187rem;
+  width: 1.5rem;
   right: 10px;
   background-color: #3a523e;
   transition: all 0.5s ease-in-out;
@@ -172,7 +172,7 @@ body {
 }
 
 .second-stripe {
-  top: 0.7rem;
+  top: 0.5rem;
 }
 
 .third-stripe {
@@ -415,23 +415,24 @@ body {
   width: 3rem;
   height: 3rem;
   background-color: transparent;
+  transition: all 0.5s ease-in-out ;
 }
 
 .slider-close path {
   stroke: #3a523e;
-  text-shadow: 2px 2px #3a523e;
 }
 
 .next-slide,
 .prev-slide {
   border: none;
   position: absolute;
-  background-color: #d3d3d399;
+  background-color: transparent;
   color: white;
   top: 45%;
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
+  transition: all 0.5s ease-in-out ;
 }
 
 .next-slide {
@@ -445,12 +446,8 @@ body {
 .chev-right,
 .chev-left {
   font-size: 2rem;
-}
-
-.outer-right {
-  position: absolute;
-  font-size: 3rem;
-  color: black;
+  mix-blend-mode: difference;
+  color: gray;
 }
 
 @media screen and (max-width: 1000px) {
