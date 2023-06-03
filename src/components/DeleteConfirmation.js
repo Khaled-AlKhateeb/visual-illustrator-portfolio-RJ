@@ -4,16 +4,18 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useSelector, useDispatch } from 'react-redux';
+import { setOpen } from '../redux/reducers/categorySlice';
 
 export default function AlertDialog(props) {
-  const [open, setOpen] = React.useState(false);
-
+  const dispatch = useDispatch();
+  const categoryNames = useSelector((state) => state.categoryData);
   const handleClickOpen = () => {
-    setOpen(true);
+    dispatch(setOpen(true));
   };
 
   const handleClose = () => {
-    setOpen(false);
+    dispatch(setOpen(false));
   };
 
   return (
@@ -23,7 +25,7 @@ export default function AlertDialog(props) {
       </button>
       <Dialog
         className="delete-dialog"
-        open={open}
+        open={categoryNames.open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
       >

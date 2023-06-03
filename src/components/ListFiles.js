@@ -4,22 +4,19 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const ListFiles = () => {
-  const data = useSelector((state) => state.categoryData);
-  const [storedArray, setStoredArray] = useState([]);
+  const dataArr = useSelector((state) => state.categoryData);
+  const data = Object.entries(dataArr?.allData);
+  console.log(data)
+  //return (
+  //  <div className='main-container'>
+  //    {data.allData && data.map((value, key) => {
+  //      console.log(value, key);
+        
+        //value.map((img, item) => {
 
-  useEffect(() => {
-    const arr = [];
-    data.names.map((cat) => {
-      cat.images.map((img) => {
-        arr.push(img);
-      });
-    })
-    setStoredArray(arr);
-  }, [data.names]);
-
-  return (
-    <div className='main-container'>
-      {data.names.map((cat, index) => {
+        //})
+      //})}
+      {/*
         return (
           <div key={index}>
             <h2 className='category-title'>{cat.name}</h2>
@@ -39,9 +36,9 @@ const ListFiles = () => {
             </div>
           </div>
         )
-      })}
-    </div>
-  );
+      })}*/}
+    //</div>
+  //);
 }
 
 export default ListFiles;
