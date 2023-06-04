@@ -450,6 +450,62 @@ body {
   color: gray;
 }
 
+.about-main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-inline: 5rem;
+  padding-bottom: 3rem;
+}
+
+.about-containers-top,
+.about-containers {
+  display: grid;
+  grid-template-columns: 25% 50%;
+  justify-content: center;
+}
+
+.personal-img {
+  justify-self: flex-end;
+  width: 75%;
+  border-right: 1px solid black;
+  padding-right: 1rem;
+}
+
+.about-info-container {
+  padding-left: 1rem;
+  width: 50%;
+}
+
+.about-title {
+  font-size: 1.4rem;
+}
+.about-text-top,
+.about-text {
+  border-right: 1px solid black;
+  padding-top: 3rem;
+  padding-right: 1rem;
+  text-align: right;
+  margin-bottom: 0;
+}
+
+.work-container {
+  display: flex;
+}
+
+.work-img-top,
+.work-img {
+  padding-top: 3rem;
+  padding-left: 1rem;
+  width: 25%;
+}
+
+.text {
+  padding-top: 3rem;
+  padding-left: 1rem;
+  margin-bottom: 0;
+}
+
 @media screen and (max-width: 1000px) {
   .header-main-container {
     position: relative;
@@ -532,6 +588,77 @@ body {
 
   .artstation-btn {
     width: 100%;
+  }
+
+  .about-main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 3rem;
+    margin: 1rem;
+  }
+
+  .about-containers-top {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .about-containers {
+    grid-template-columns: 20% 85%;
+    width: 100%;
+  }
+
+  .personal-img {
+    justify-self: baseline;
+    width: 50%;
+    height: fit-content;
+    border-right: none;
+    padding-right: 0;
+    padding-bottom: 1rem;
+  }
+  
+  .about-info-container {
+    padding-left: 1rem;
+    width: 50%;
+  }
+  
+  .about-title {
+    font-size: 1.4rem;
+  }
+  
+  .about-text-top {
+    padding-top: 0;
+    padding-left: 0;
+    width: 100%;
+  }
+
+  .work-img-top {
+    padding-top: 0;
+    padding-left: 1rem;
+    width: 75%;
+  }
+
+  .about-text {
+    width: 100%;
+  }
+  
+  .work-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .work-img {
+    padding-top: 3rem;
+    padding-left: 1rem;
+    width: 75%;
+  }
+  
+  .text {
+    padding-top: 1rem;
+    padding-left: 1rem;
+    margin-bottom: 0;
   }
 }
 
