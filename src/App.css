@@ -413,12 +413,13 @@ body {
 .slider-close {
   position: absolute;
   border: none;
-  right: 10px;
-  top: 30px;
-  width: 3rem;
-  height: 3rem;
+  right: 3rem;
+  top: 3rem;
+  width: 2rem;
+  height: 2rem;
   transition: all 0.5s ease-in-out;
   background-color: transparent;
+  padding: 0;
 }
 
 .close-icon {
@@ -592,6 +593,17 @@ body {
     max-width: none;
   }
 
+  .slider-close {
+    position: absolute;
+    border: none;
+    right: 1rem;
+    top: 1rem;
+    width: 2rem;
+    height: 2rem;
+    transition: all 0.5s ease-in-out;
+    background-color: transparent;
+  }
+
   .artstation-btn {
     width: 100%;
   }
@@ -603,6 +615,8 @@ body {
     align-items: center;
     padding-bottom: 3rem;
     margin: 1rem;
+    max-width: 500px;
+    margin: auto;
   }
 
   .about-containers-top {
@@ -612,7 +626,7 @@ body {
   }
 
   .about-containers {
-    grid-template-columns: 20% 85%;
+    grid-template-columns: 30% 70%;
     width: 100%;
   }
 
@@ -621,6 +635,7 @@ body {
     width: 50%;
     height: fit-content;
     border-right: none;
+    padding-left: 1rem;
     padding-right: 0;
     padding-bottom: 1rem;
   }
@@ -643,7 +658,7 @@ body {
   .work-img-top {
     padding-top: 0;
     padding-left: 1rem;
-    width: 75%;
+    width: 40%;
   }
 
   .about-text {
@@ -658,7 +673,7 @@ body {
   .work-img {
     padding-top: 3rem;
     padding-left: 1rem;
-    width: 75%;
+    width: 40%;
   }
 
   .text {
