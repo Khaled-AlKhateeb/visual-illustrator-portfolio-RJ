@@ -11,13 +11,10 @@ import { loaded } from './redux/reducers/categorySlice';
 import './App.css';
 
 function App() {
-  //const data = useSelector((state) => state.categoryData);
   const dispatch = useDispatch();
   
   useEffect(() => {
-    console.log('here');
     dispatch(loaded());
-    console.log('there');
   });
 
   return (

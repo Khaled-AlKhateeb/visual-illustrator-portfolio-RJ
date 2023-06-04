@@ -59,12 +59,34 @@ const categorySlice = createSlice({
     });
   },
 });
+export const {
+  percent,
+  setPercent,
+  file,
+  setFile,
+  uploadSelectedCategory,
+  setUploadSelectedCategory,
+  categoryInput,
+  setCategoryInput,
+  uploadDone,
+  setUploadDone,
+  newCategory,
+  setNewCategory,
+  categoryList,
+  setCategoryList,
+  deleteEntry,
+  setDeleteEntry,
+  uploadMessageText,
+  setUploadMessageText,
+  open,
+  setOpen
+} = categorySlice.actions;
 
-export const loaded = createAsyncThunk(LOADED, async (payload, { dispatch }) => {
+export const loaded = createAsyncThunk('categorySlice/loadData', async (payload, { dispatch }) => {
   const listRef = ref(storage, '/Data');
   const res = await listAll(listRef);
   const dirPromises = [];
-  const data = {};
+  const data = {};   
   res.prefixes.forEach((itemRef) => {
     dispatch(setCategoryList(itemRef.name));
     const listCategories = ref(storage, `/Data/${itemRef.name}`);
@@ -90,7 +112,7 @@ export const loaded = createAsyncThunk(LOADED, async (payload, { dispatch }) => 
   return data;
 });
 
-export const uploadImage = createAsyncThunk(UPLOAD_IMAGE, async (payload, { dispatch }) => {
+export const uploadImage = createAsyncThunk('categorySlice/uploadData', async (payload, { dispatch }) => {
   const { category, img } = payload;
   const storageRef = ref(storage, `/Data/${category}/${img.name}`);
   const uploadTask = uploadBytesResumable(storageRef, img);
@@ -119,7 +141,7 @@ export const uploadImage = createAsyncThunk(UPLOAD_IMAGE, async (payload, { disp
   dispatch(loaded());
 });
 
-export const imageDelete = createAsyncThunk(IMAGE_DELETE, async (payload, { dispatch }) => {
+export const imageDelete = createAsyncThunk('categorySlice/deleteData', async (payload, { dispatch }) => {
   const { categoryName, imageName } = payload;
   const desertRef = ref(storageDelete, `/Data/${categoryName}/${imageName}`);
   deleteObject(desertRef).then(() => {
@@ -134,27 +156,4 @@ export const imageDelete = createAsyncThunk(IMAGE_DELETE, async (payload, { disp
   });
 })
 
-export const {
-  percent,
-  setPercent,
-  file,
-  setFile,
-  uploadSelectedCategory,
-  setUploadSelectedCategory,
-  categoryInput,
-  setCategoryInput,
-  uploadDone,
-  setUploadDone,
-  newCategory,
-  setNewCategory,
-  categoryList,
-  setCategoryList,
-  deleteEntry,
-  setDeleteEntry,
-  uploadMessageText,
-  setUploadMessageText,
-  open,
-  setOpen
-} = categorySlice.actions;
-
-export default { loaded, imageDelete, uploadImage } = categorySlice.reducer;
+export default categorySlice.reducer;
