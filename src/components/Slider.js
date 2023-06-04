@@ -36,19 +36,27 @@ function Slider() {
 
   const buttonContainerRef = useRef(null);
   const buttonsRef = useRef([]);
-
-  const [showButtons, setShowButtons] = useState(true);
   
   useEffect(() => {
     let timeoutId;
     const buttonContainer = buttonContainerRef.current;
-
+    
     const hideButtons = () => {
-      setShowButtons(false);
+      buttonsRef.current.map((el) => {
+        if (el) {
+          el.style.opacity = 0;
+        }
+        return null;
+      })
     };
-
+    
     const showButtons = () => {
-      setShowButtons(true);
+      buttonsRef.current.map((el) => {
+        if (el) {
+          el.style.opacity = 1;
+        }
+        return null;
+      })
       resetTimeout();
     };
 
@@ -78,10 +86,10 @@ function Slider() {
 
   return (
     <div className="slider-main-container" ref={buttonContainerRef}>
-      {showButtons && (
+      {buttonsRef && (
         <>
           <button className="slider-close" ref={(el) => buttonsRef.current.push(el)} onClick={sliderClose}><GrClose className="close-icon" /></button>
-          <button className="next-slide" ref={(el) => buttonsRef.current.push(el)} onClick={nextImg}><BsChevronRight className="chev-right" /><BsChevronRight className="outer-right" /></button>
+          <button className="next-slide" ref={(el) => buttonsRef.current.push(el)} onClick={nextImg}><BsChevronRight className="chev-right" /></button>
           <button className="prev-slide" ref={(el) => buttonsRef.current.push(el)} onClick={prevImg}><BsChevronLeft className="chev-left" /></button>
         </>
       )}

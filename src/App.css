@@ -10,6 +10,7 @@ a:hover {
 body {
   font-family: "Quicksand", sans-serif;
   background-color: #dde1e7;
+  color: #3a523e;
 }
 
 .header-main-container {
@@ -148,8 +149,8 @@ body {
   position: absolute;
   display: none;
   flex-direction: column;
-  height: 1.67rem;
-  width: 3rem;
+  height: 1.25rem;
+  width: 2.25rem;
   top: 30px;
   right: 30px;
   border: none;
@@ -160,8 +161,8 @@ body {
 .second-stripe,
 .third-stripe {
   position: absolute;
-  height: 0.25rem;
-  width: 2rem;
+  height: 0.187rem;
+  width: 1.5rem;
   right: 10px;
   background-color: #3a523e;
   transition: all 0.5s ease-in-out;
@@ -172,7 +173,7 @@ body {
 }
 
 .second-stripe {
-  top: 0.7rem;
+  top: 0.5rem;
 }
 
 .third-stripe {
@@ -363,6 +364,8 @@ body {
 
 .contact-title {
   font-size: 1.4rem;
+  line-height: 2rem;
+  color: #3a523e;
 }
 
 .contact-form {
@@ -376,7 +379,7 @@ body {
   border: none;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  width: 20%;
+  min-width: 30rem;
 }
 
 .textarea {
@@ -415,23 +418,24 @@ body {
   width: 3rem;
   height: 3rem;
   background-color: transparent;
+  transition: all 0.5s ease-in-out ;
 }
 
 .slider-close path {
   stroke: #3a523e;
-  text-shadow: 2px 2px #3a523e;
 }
 
 .next-slide,
 .prev-slide {
   border: none;
   position: absolute;
-  background-color: #d3d3d399;
+  background-color: transparent;
   color: white;
   top: 45%;
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
+  transition: all 0.5s ease-in-out ;
 }
 
 .next-slide {
@@ -445,12 +449,65 @@ body {
 .chev-right,
 .chev-left {
   font-size: 2rem;
+  mix-blend-mode: difference;
+  color: gray;
 }
 
-.outer-right {
-  position: absolute;
-  font-size: 3rem;
-  color: black;
+.about-main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-inline: 5rem;
+  padding-bottom: 3rem;
+}
+
+.about-containers-top,
+.about-containers {
+  display: grid;
+  grid-template-columns: 25% 50%;
+  justify-content: center;
+  color: #3a523e;
+}
+
+.personal-img {
+  justify-self: flex-end;
+  width: 75%;
+  border-right: 1px solid #3a523e;
+  padding-right: 1rem;
+}
+
+.about-info-container {
+  padding-left: 1rem;
+  width: 50%;
+}
+
+.about-title {
+  font-size: 1.4rem;
+}
+.about-text-top,
+.about-text {
+  border-right: 1px solid #3a523e;
+  padding-top: 3rem;
+  padding-right: 1rem;
+  text-align: right;
+  margin-bottom: 0;
+}
+
+.work-container {
+  display: flex;
+}
+
+.work-img-top,
+.work-img {
+  padding-top: 3rem;
+  padding-left: 1rem;
+  width: 25%;
+}
+
+.text {
+  padding-top: 3rem;
+  padding-left: 1rem;
+  margin-bottom: 0;
 }
 
 @media screen and (max-width: 1000px) {
@@ -535,6 +592,87 @@ body {
 
   .artstation-btn {
     width: 100%;
+  }
+
+  .about-main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 3rem;
+    margin: 1rem;
+  }
+
+  .about-containers-top {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .about-containers {
+    grid-template-columns: 20% 85%;
+    width: 100%;
+  }
+
+  .personal-img {
+    justify-self: baseline;
+    width: 50%;
+    height: fit-content;
+    border-right: none;
+    padding-right: 0;
+    padding-bottom: 1rem;
+  }
+  
+  .about-info-container {
+    padding-left: 1rem;
+    width: 50%;
+  }
+  
+  .about-title {
+    font-size: 1.4rem;
+  }
+  
+  .about-text-top {
+    padding-top: 0;
+    padding-left: 0;
+    width: 100%;
+  }
+
+  .work-img-top {
+    padding-top: 0;
+    padding-left: 1rem;
+    width: 75%;
+  }
+
+  .about-text {
+    width: 100%;
+  }
+  
+  .work-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .work-img {
+    padding-top: 3rem;
+    padding-left: 1rem;
+    width: 75%;
+  }
+  
+  .text {
+    padding-top: 1rem;
+    padding-left: 1rem;
+    margin-bottom: 0;
+  }
+
+  .contact-title {
+    font-size: 1.1rem;
+    line-height: 1.5rem;
+    color: #3a523e;
+  }
+
+  .form-input {
+    min-width: 20rem;
   }
 }
 
