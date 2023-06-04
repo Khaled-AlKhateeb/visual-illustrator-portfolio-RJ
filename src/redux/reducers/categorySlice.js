@@ -7,86 +7,12 @@ const LOADED = 'LOADED';
 const UPLOAD_IMAGE = 'UPLOAD_IMAGE';
 const IMAGE_DELETE = 'IMAGE_DELETE';
 
-const categorySlice = createSlice({
-  name: 'categoryData',
-  initialState: {
-    percent: 0,
-    file: [],
-    uploadSelectedCategory: '',
-    uploadDone: '',
-    newCategory: '',
-    categoryList: [],
-    deleteEntry: '',
-    uploadMessageText: '',
-    categoryInput: '',
-    open: false,
-  },
-  reducers: {
-    setPercent: (state, action) => {
-      state.percent = action.payload;
-    },
-    setFile: (state, action) => {
-      state.file = action.payload;
-    },
-    setUploadSelectedCategory: (state, action) => {
-      state.uploadSelectedCategory = action.payload;
-    },
-    setUploadDone: (state, action) => {
-      state.uploadDone = action.payload;
-    },
-    setNewCategory: (state, action) => {
-      state.newCategory = action.payload;
-    },
-    setCategoryList: (state, action) => {
-      state.categoryList.push(action.payload);
-    },
-    setDeleteEntry: (state, action) => {
-      state.deleteEntry = action.payload;
-    },
-    setUploadMessageText: (state, action) => {
-      state.uploadMessageText = action.payload;
-    },
-    setCategoryInput: (state, action) => {
-      state.categoryInput = action.payload;
-    },
-    setOpen: (state, action) => {
-      state.open = action.payload;
-    }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(loaded.fulfilled, (state, action) => {
-      state = { ...state, allData: action.payload }
-    });
-  },
-});
-export const {
-  percent,
-  setPercent,
-  file,
-  setFile,
-  uploadSelectedCategory,
-  setUploadSelectedCategory,
-  categoryInput,
-  setCategoryInput,
-  uploadDone,
-  setUploadDone,
-  newCategory,
-  setNewCategory,
-  categoryList,
-  setCategoryList,
-  deleteEntry,
-  setDeleteEntry,
-  uploadMessageText,
-  setUploadMessageText,
-  open,
-  setOpen
-} = categorySlice.actions;
 
 export const loaded = createAsyncThunk('categorySlice/loadData', async (payload, { dispatch }) => {
   const listRef = ref(storage, '/Data');
   const res = await listAll(listRef);
   const dirPromises = [];
-  const data = {};   
+  const data = {};
   res.prefixes.forEach((itemRef) => {
     dispatch(setCategoryList(itemRef.name));
     const listCategories = ref(storage, `/Data/${itemRef.name}`);
@@ -155,5 +81,82 @@ export const imageDelete = createAsyncThunk('categorySlice/deleteData', async (p
     alert(err);
   });
 })
+
+const categorySlice = createSlice({
+  name: 'categoryData',
+  initialState: {
+    allData: [],
+    percent: 0,
+    file: [],
+    uploadSelectedCategory: '',
+    uploadDone: '',
+    newCategory: '',
+    categoryList: [],
+    deleteEntry: '',
+    uploadMessageText: '',
+    categoryInput: '',
+    open: false,
+  },
+  reducers: {
+    setPercent: (state, action) => {
+      state.percent = action.payload;
+    },
+    setFile: (state, action) => {
+      state.file = action.payload;
+    },
+    setUploadSelectedCategory: (state, action) => {
+      state.uploadSelectedCategory = action.payload;
+    },
+    setUploadDone: (state, action) => {
+      state.uploadDone = action.payload;
+    },
+    setNewCategory: (state, action) => {
+      state.newCategory = action.payload;
+    },
+    setCategoryList: (state, action) => {
+      state.categoryList.push(action.payload);
+    },
+    setDeleteEntry: (state, action) => {
+      state.deleteEntry = action.payload;
+    },
+    setUploadMessageText: (state, action) => {
+      state.uploadMessageText = action.payload;
+    },
+    setCategoryInput: (state, action) => {
+      state.categoryInput = action.payload;
+    },
+    setOpen: (state, action) => {
+      state.open = action.payload;
+    }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loaded.fulfilled, (state, action) => {
+      state = { ...state, allData: action.payload }
+    });
+  },
+});
+
+export const {
+  percent,
+  setPercent,
+  file,
+  setFile,
+  uploadSelectedCategory,
+  setUploadSelectedCategory,
+  categoryInput,
+  setCategoryInput,
+  uploadDone,
+  setUploadDone,
+  newCategory,
+  setNewCategory,
+  categoryList,
+  setCategoryList,
+  deleteEntry,
+  setDeleteEntry,
+  uploadMessageText,
+  setUploadMessageText,
+  open,
+  setOpen
+} = categorySlice.actions;
 
 export default categorySlice.reducer;
