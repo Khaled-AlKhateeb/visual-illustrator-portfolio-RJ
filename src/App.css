@@ -414,15 +414,17 @@ body {
   position: absolute;
   border: none;
   right: 10px;
-  top: 10px;
+  top: 30px;
   width: 3rem;
   height: 3rem;
+  transition: all 0.5s ease-in-out;
   background-color: transparent;
-  transition: all 0.5s ease-in-out ;
 }
 
-.slider-close path {
-  stroke: #3a523e;
+.close-icon {
+  color: gray;
+  mix-blend-mode: difference;
+  font-size: 2rem;
 }
 
 .next-slide,
@@ -435,7 +437,7 @@ body {
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  transition: all 0.5s ease-in-out ;
+  transition: all 0.5s ease-in-out;
 }
 
 .next-slide {
@@ -464,14 +466,14 @@ body {
 .about-containers-top,
 .about-containers {
   display: grid;
-  grid-template-columns: 25% 50%;
+  grid-template-columns: 50% 50%;
   justify-content: center;
   color: #3a523e;
 }
 
 .personal-img {
   justify-self: flex-end;
-  width: 75%;
+  width: 37.5%;
   border-right: 1px solid #3a523e;
   padding-right: 1rem;
 }
@@ -559,7 +561,7 @@ body {
   .category-container {
     padding: 0.75rem 0;
     gap: 0.75rem;
-    margin:  0;
+    margin: 0;
     width: 100vw;
   }
 
@@ -608,7 +610,7 @@ body {
     justify-content: center;
     margin-bottom: 2rem;
   }
-  
+
   .about-containers {
     grid-template-columns: 20% 85%;
     width: 100%;
@@ -622,16 +624,16 @@ body {
     padding-right: 0;
     padding-bottom: 1rem;
   }
-  
+
   .about-info-container {
     padding-left: 1rem;
     width: 50%;
   }
-  
+
   .about-title {
     font-size: 1.4rem;
   }
-  
+
   .about-text-top {
     padding-top: 0;
     padding-left: 0;
@@ -647,7 +649,7 @@ body {
   .about-text {
     width: 100%;
   }
-  
+
   .work-container {
     display: flex;
     flex-direction: column;
@@ -658,7 +660,7 @@ body {
     padding-left: 1rem;
     width: 75%;
   }
-  
+
   .text {
     padding-top: 1rem;
     padding-left: 1rem;

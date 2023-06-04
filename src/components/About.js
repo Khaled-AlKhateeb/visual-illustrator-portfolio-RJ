@@ -2,7 +2,7 @@ function About() {
   return (
     <div className="about-main-container">
       <div className="about-containers-top">
-        <img src="Personal.png" alt="ramiJuma photo" className="personal-img" />
+        <img src="Personal.png" alt="ramiJuma" className="personal-img" />
         <div className="about-info-container">
           <h5 className="about-title">About me</h5>
           <p>
@@ -26,7 +26,7 @@ function About() {
       <div className="about-containers">
         <p className="about-text">Feb 2022<br />-<br />Jul 2021</p>
         <div className="work-container">
-          <img src="MFD.png" alt="My Fathers Dragon image" className="work-img" />
+          <img src="MFD.png" alt="My Fathers Dragon" className="work-img" />
           <p className="text">
             <strong>Cartoon Saloon</strong><br />
             Kilkenny, Ireland<br />

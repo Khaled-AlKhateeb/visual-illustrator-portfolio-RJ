@@ -12,7 +12,9 @@ const ListFiles = () => {
     data.names.map((cat) => {
       cat.images.map((img) => {
         arr.push(img);
+        return null;
       });
+      return null;
     })
     setStoredArray(arr);
   }, [data.names]);
