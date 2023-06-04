@@ -10,6 +10,7 @@ a:hover {
 body {
   font-family: "Quicksand", sans-serif;
   background-color: #dde1e7;
+  color: #3a523e;
 }
 
 .header-main-container {
@@ -363,6 +364,8 @@ body {
 
 .contact-title {
   font-size: 1.4rem;
+  line-height: 2rem;
+  color: #3a523e;
 }
 
 .contact-form {
@@ -376,7 +379,7 @@ body {
   border: none;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  width: 20%;
+  min-width: 30rem;
 }
 
 .textarea {
@@ -463,12 +466,13 @@ body {
   display: grid;
   grid-template-columns: 25% 50%;
   justify-content: center;
+  color: #3a523e;
 }
 
 .personal-img {
   justify-self: flex-end;
   width: 75%;
-  border-right: 1px solid black;
+  border-right: 1px solid #3a523e;
   padding-right: 1rem;
 }
 
@@ -482,7 +486,7 @@ body {
 }
 .about-text-top,
 .about-text {
-  border-right: 1px solid black;
+  border-right: 1px solid #3a523e;
   padding-top: 3rem;
   padding-right: 1rem;
   text-align: right;
@@ -659,6 +663,16 @@ body {
     padding-top: 1rem;
     padding-left: 1rem;
     margin-bottom: 0;
+  }
+
+  .contact-title {
+    font-size: 1.1rem;
+    line-height: 1.5rem;
+    color: #3a523e;
+  }
+
+  .form-input {
+    min-width: 20rem;
   }
 }
 
