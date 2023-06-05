@@ -3,6 +3,7 @@ import Image from './Image';
 import { useEffect, useRef, useState } from 'react';
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs';
 import { GrClose } from 'react-icons/gr';
+import { useSelector } from 'react-redux';
 
 function Slider() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ function Slider() {
   }
 
   const imgName = location.state.name;
-  const allImgs = location.state.array;
+  const allImgs = useSelector((state) => state.categoryData.allImgs);
   const view = allImgs.findIndex((item) => item.name === imgName)
 
   const [currentIndex, setCurrentIndex] = useState(view);

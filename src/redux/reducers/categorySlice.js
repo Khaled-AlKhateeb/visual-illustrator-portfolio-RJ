@@ -3,10 +3,6 @@ import { listAll, ref, getStorage, app, getDownloadURL, uploadBytesResumable, de
 
 const storage = getStorage(app);
 const storageDelete = getStorage();
-const LOADED = 'LOADED';
-const UPLOAD_IMAGE = 'UPLOAD_IMAGE';
-const IMAGE_DELETE = 'IMAGE_DELETE';
-
 
 export const loaded = createAsyncThunk('categorySlice/loadData', async (payload, { dispatch }) => {
   const listRef = ref(storage, '/Data');
@@ -19,7 +15,7 @@ export const loaded = createAsyncThunk('categorySlice/loadData', async (payload,
     dirPromises.push(listAll(listCategories));
   });
   const categoriesResolved = await Promise.all(dirPromises);
-
+  const imgArray = [];
   await Promise.all(
     categoriesResolved.map(async (imgRef) => {
       await Promise.all(
@@ -28,13 +24,19 @@ export const loaded = createAsyncThunk('categorySlice/loadData', async (payload,
           const path = item._location.path_.split('/');
           const categoryName = path[1];
           const fileName = path[2];
+          const imgfile = {
+            name: fileName,
+            url: await imagePromise
+          };
+          imgArray.push(imgfile);
           if (!data[categoryName])
-            data[categoryName] = [];
-          data[categoryName].push({ name: fileName, url: await imagePromise });
+          data[categoryName] = [];
+          data[categoryName].push(imgfile);
         })
       );
     })
   );
+  dispatch(setAllImgs(imgArray));
   return data;
 });
 
@@ -96,6 +98,7 @@ const categorySlice = createSlice({
     uploadMessageText: '',
     categoryInput: '',
     open: false,
+    allImgs: []
   },
   reducers: {
     setPercent: (state, action) => {
@@ -127,11 +130,16 @@ const categorySlice = createSlice({
     },
     setOpen: (state, action) => {
       state.open = action.payload;
+    },
+    setAllImgs: (state, action) => {
+      if (!state.allImgs.length) {
+        state.allImgs = action.payload;
+      }
     }
   },
   extraReducers: (builder) => {
     builder.addCase(loaded.fulfilled, (state, action) => {
-      state = { ...state, allData: action.payload }
+      state.allData = action.payload;
     });
   },
 });
@@ -156,7 +164,9 @@ export const {
   uploadMessageText,
   setUploadMessageText,
   open,
-  setOpen
+  setOpen,
+  allImgs,
+  setAllImgs
 } = categorySlice.actions;
 
 export default categorySlice.reducer;
