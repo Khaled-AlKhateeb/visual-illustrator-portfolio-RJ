@@ -23,7 +23,7 @@ const Upload = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(process.env.REACT_APP_UPLOAD_PASSWORD, password)
+    console.log(process.env.REACT_APP_UPLOAD_PASSWORD, password, process.env.REACT_APP_API_KEY)
     if (password === process.env.REACT_APP_UPLOAD_PASSWORD) {
       setIsLoggedIn(true);
     } else {
