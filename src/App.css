@@ -626,7 +626,8 @@ body {
   }
 
   .about-containers {
-    grid-template-columns: 30% 70%;
+    grid-template-columns: 20% 50%;
+    justify-content: center;
     width: 100%;
   }
 
@@ -641,7 +642,7 @@ body {
   }
 
   .about-info-container {
-    padding-left: 1rem;
+    padding-inline: 1rem;
     width: 50%;
   }
 
@@ -661,8 +662,10 @@ body {
     width: 40%;
   }
 
+  .about-text-top,
   .about-text {
-    width: 100%;
+    width: fit-content;
+    justify-self: flex-end;
   }
 
   .work-container {
@@ -690,6 +693,17 @@ body {
 
   .form-input {
     min-width: 20rem;
+  }
+}
+
+@media screen and (max-width: 500px ) {
+  .about-containers {
+    grid-template-columns: 30% 70%;
+    width: 100%;
+  }
+
+  .about-text {
+    width: 100%;
   }
 }
 
