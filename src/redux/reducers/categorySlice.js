@@ -1,47 +1,54 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { listAll, ref, getStorage, app, getDownloadURL, uploadBytesResumable, deleteObject } from '../../firebaseConfig';
+import { ref, getStorage, app, getDownloadURL, uploadBytesResumable, deleteObject, db, setDoc, doc, getDoc, deleteDoc } from '../../firebaseConfig';
 
 const storage = getStorage(app);
 const storageDelete = getStorage();
 
-export const loaded = createAsyncThunk('categorySlice/loadData', async (payload, { dispatch }) => {
-  const listRef = ref(storage, '/Data');
-  const res = await listAll(listRef);
-  const dirPromises = [];
-  const data = {};
-  res.prefixes.forEach((itemRef) => {
-    dispatch(setCategoryList(itemRef.name));
-    const listCategories = ref(storage, `/Data/${itemRef.name}`);
-    dirPromises.push(listAll(listCategories));
-  });
-  const categoriesResolved = await Promise.all(dirPromises);
-  const imgArray = [];
-  await Promise.all(
-    categoriesResolved.map(async (imgRef) => {
-      await Promise.all(
-        imgRef.items.map(async (item) => {
-          const imagePromise = getDownloadURL(ref(storage, item._location.path_));
-          const path = item._location.path_.split('/');
-          const categoryName = path[1];
-          const fileName = path[2];
-          const imgfile = {
-            name: fileName,
-            url: await imagePromise
-          };
-          imgArray.push(imgfile);
-          if (!data[categoryName])
-          data[categoryName] = [];
-          data[categoryName].push(imgfile);
-        })
-      );
+export const loaded = createAsyncThunk('categorySlice/loadData', async (payload, {dispatch}) => {
+  const docRef = doc(db, "Data", "newEntries");
+  const allRef = doc(db, "Data", "allData");
+  const docSnap = await getDoc(docRef);
+  const allSnap = await getDoc(allRef);
+  const docItem = docSnap.data();
+  const allItem = allSnap.data();
+  const data = [];
+
+  await deleteDoc(doc(db, "Data", "allData"));
+
+  if (allItem) {
+    allItem.data.map((item) => { data.push(item); return null; })
+    if (data.some(item => Object.entries(item).some((value) => value[0] === 'name' && value[1] === docItem.name))) {
+      data.map((item) => {
+        if (item.name === docItem.name) {
+          if (!item.imgs.some(item => Object.entries(item).some((value) => value[0] === 'name' && value[1] === docItem.imgs[0].name))) {
+            item.imgs.push(docItem.imgs[0])
+          }
+        }
+        return null;
+      })
+    } else {
+      data.push(docItem);
+    }
+  } else {
+    data.push(docItem);
+  };
+
+  data.map((cat) => {
+    dispatch(setCategoryList({ name: cat.name, order: cat.order }));
+    cat.imgs.map((img) => {
+      dispatch(setAllImgs(img));
+      return null;
     })
-  );
-  dispatch(setAllImgs(imgArray));
+    return null;
+  });
+
+  await setDoc(doc(db, "Data", "allData"), { data });
+
   return data;
 });
 
 export const uploadImage = createAsyncThunk('categorySlice/uploadData', async (payload, { dispatch }) => {
-  const { category, img } = payload;
+  const { category, img, imgOrder } = payload;
   const storageRef = ref(storage, `/Data/${category}/${img.name}`);
   const uploadTask = uploadBytesResumable(storageRef, img);
   uploadTask.on(
@@ -60,14 +67,31 @@ export const uploadImage = createAsyncThunk('categorySlice/uploadData', async (p
           dispatch(setUploadDone(''));
           dispatch(setCategoryInput(''));
           dispatch(setUploadSelectedCategory(''));
+          dispatch(fetchUrl({category, img, imgOrder}))
         }, 4000);
       }
     },
     (err) => alert(err),
   );
 
-  dispatch(loaded());
 });
+
+export const fetchUrl = createAsyncThunk('categorySlice/fetchUrl', async (payload, { dispatch, getState }) => {
+  const currentState = getState().categoryData;
+  const { category, img, imgOrder } = payload;
+  const imageUrl = await getDownloadURL(ref(storage, `Data/${category}/${img.name}`));
+  const categoryName = {
+    name: category,
+    order: currentState.categoryOrder,
+    imgs: [{
+      name: img.name,
+      order: imgOrder,
+      url: imageUrl,
+    }]
+  };
+  await setDoc(doc(db, "Data", "newEntries"), categoryName);
+  dispatch(loaded());
+})
 
 export const imageDelete = createAsyncThunk('categorySlice/deleteData', async (payload, { dispatch }) => {
   const { categoryName, imageName } = payload;
@@ -89,7 +113,7 @@ const categorySlice = createSlice({
   initialState: {
     allData: [],
     percent: 0,
-    file: [],
+    file: null,
     uploadSelectedCategory: '',
     uploadDone: '',
     newCategory: '',
@@ -98,7 +122,10 @@ const categorySlice = createSlice({
     uploadMessageText: '',
     categoryInput: '',
     open: false,
-    allImgs: []
+    allImgs: [],
+    categoryOrder: 0,
+    imgOrder: 0,
+    fetchUrl: {}
   },
   reducers: {
     setPercent: (state, action) => {
@@ -115,6 +142,9 @@ const categorySlice = createSlice({
     },
     setNewCategory: (state, action) => {
       state.newCategory = action.payload;
+    },
+    setCategoryOrder: (state, action) => {
+      state.categoryOrder = action.payload;
     },
     setCategoryList: (state, action) => {
       state.categoryList.push(action.payload);
@@ -133,15 +163,22 @@ const categorySlice = createSlice({
     },
     setAllImgs: (state, action) => {
       if (!state.allImgs.length) {
-        state.allImgs = action.payload;
+        state.allImgs.push(action.payload);
       }
+    },
+    setImgOrder: (state, action) => {
+      state.imgOrder = action.payload;
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(loaded.fulfilled, (state, action) => {
-      state.allData = action.payload;
-    });
-  },
+    builder
+      .addCase(loaded.fulfilled, (state, action) => {
+        state.allData = action.payload;
+      })
+      .addCase(fetchUrl.fulfilled, (state, action) => {
+        return state;
+      })
+  }
 });
 
 export const {
@@ -166,7 +203,11 @@ export const {
   open,
   setOpen,
   allImgs,
-  setAllImgs
+  setAllImgs,
+  categoryOrder,
+  setCategoryOrder,
+  imgOrder,
+  setImgOrder
 } = categorySlice.actions;
 
 export default categorySlice.reducer;

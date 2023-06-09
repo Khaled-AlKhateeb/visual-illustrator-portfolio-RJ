@@ -10,7 +10,7 @@ const ListFiles = () => {
 
   return (
     <div className='main-container'>
-      {data.map((value, key) => {
+      {/*{data.map((value, key) => {
         return (
           <div key={key}>
             <h2 className='category-title'>{value[0]}</h2>
@@ -30,7 +30,7 @@ const ListFiles = () => {
             </div>
           </div>
         )
-      })}
+      })}*/}
     </div >
   );
 }

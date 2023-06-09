@@ -12,6 +12,10 @@ import {
   setNewCategory,
   setCategoryList,
   setDeleteEntry,
+  setCategoryOrder,
+  categoryOrder,
+  imgOrder,
+  setImgOrder
 } from '../redux/reducers/categorySlice';
 import AlertDialog from './DeleteConfirmation';
 
@@ -23,6 +27,8 @@ const Upload = () => {
   const categoryInput = useRef(null);
   const uploadMessage = useRef(null);
   const deleteItems = useRef(null);
+  const categoryOrderInput = useRef(null);
+  const imgOrderInput = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,20 +39,29 @@ const Upload = () => {
     }
   };
 
-  const handleSelectedImage = (event) => {
-    const fileSelected = event.target.files[0];
-    dispatch(setFile(fileSelected));
-  };
+  const handleImgOrder = (event) => {
+    dispatch(setImgOrder(event.target.value));
+  }
 
-  const handleNewCategory = (event) => {
-    const newCategoryInput = event.target.value;
+  const handleSelectedImage = (event) => {
+    dispatch(setFile(event.target.files[0]));
+  };
+  
+  const handleNewCategory = () => {
+    const newCategoryInput = categoryInput.current.value;
+    const newCategoryOrder = categoryOrderInput.current.value;
     dispatch(setNewCategory(newCategoryInput));
+    dispatch(setCategoryOrder(newCategoryOrder));
   }
 
   const handleUploadCategory = () => {
-    dispatch(setCategoryList(categoryNames.newCategory));
-    dispatch(setNewCategory(''));
-    categoryInput.current.value = '';
+    if (categoryInput.current.value === '' || categoryOrderInput.current.value === '') {
+      window.alert('Select category and order');
+    } else {
+      dispatch(setCategoryList({name: categoryNames.newCategory, order: categoryNames.categoryOrder}));
+      dispatch(setNewCategory(''));
+      categoryOrderInput.current.value = '';
+    }
   }
 
   const handleSelectChange = (event) => {
@@ -54,26 +69,28 @@ const Upload = () => {
   }
   
   const handleUpload = () => {
-    dispatch(uploadImage({ category: categoryNames.uploadSelectedCategory, img: categoryNames.file }));
+    dispatch(uploadImage({ category: categoryNames.uploadSelectedCategory, img: categoryNames.file, imgOrder: categoryNames.imgOrder }));
+    imgOrderInput.current.value = '';
   }
   
   const handleModifyCategoryList = () => {
     dispatch(setDeleteEntry(deleteItems.current.value));
   }
   
-  const selectImageText = categoryNames.file.name ? categoryNames.file.name : 'Select Image';
-
-  const renderOptions = categoryNames.categoryList.map((cat, index) => <option key={index} value={cat}>{cat}</option>);
   
-  const renderImages = () =>
-  {for (const key of Object.keys(categoryNames.allData)) {
-    const category = categoryNames.allData[key];
+  const renderOptions = () => categoryNames.categoryList.map((cat, index) => {
+    return <option key={index} value={cat.name}>{cat.name}</option>
+  });
+  
+  const renderImages = () => {
+    for (const key of Object.keys(categoryNames.allData)) {
+      const category = categoryNames.allData[key];
       if (categoryNames.deleteEntry === key) {
         return category.map((image, index) => {
           const handleDelete = () => {
-            dispatch(imageDelete({categoryName: categoryNames.deleteEntry, imageName: image.name} ))
+            dispatch(imageDelete({ categoryName: categoryNames.deleteEntry, imageName: image.name }))
           };
-  
+          
           return <div key={index} className="delete-item-container">
             <img className="delete-item" src={image.url} alt={image.name} />
             <AlertDialog delete={handleDelete} />
@@ -81,8 +98,10 @@ const Upload = () => {
         });
       }
     }
-  }
+  };
   
+  const selectImageText = categoryNames.file ? categoryNames.file.name : 'Select Image';
+
   return (
     <div className="upload-container">
       {isLoggedIn ? (
@@ -90,21 +109,21 @@ const Upload = () => {
           <div>
             <h3>Upload Images</h3>
             <div className="create-container">
-              <input className="upload-category" type="text" value={newCategory} ref={categoryInput} onChange={handleNewCategory} placeholder='New Category Name' />
+              <input className="upload-category" type="text" value={categoryNames.newCategory} ref={categoryInput} placeholder='New Category Name' onChange={handleNewCategory} />
+              <input className="category-order" type="number" min={1} ref={categoryOrderInput} placeholder="Order" onChange={handleNewCategory} />
               <button className="add-category-btn" onClick={handleUploadCategory}>Create</button>
             </div>
           </div>
-          <label className="upload-label" htmlFor="uploadInput">
-            {selectImageText}
-            <input className="upload-input" id="uploadInput" type="file" accept="" onChange={handleSelectedImage} />
-          </label>
+          <div className="create-container">
+            <label className="upload-label" htmlFor="uploadInput">
+              {selectImageText}
+              <input className="upload-input" id="uploadInput" type="file" accept="" onChange={handleSelectedImage} />
+            </label>
+            <input className="img-order" type="number" min={1} ref={imgOrderInput} onChange={handleImgOrder} placeholder="Order" />
+          </div>
           <select className="delete-options" value={uploadSelectedCategory} onChange={handleSelectChange}>
             <option value="" hidden>Select a Category</option>
-            {categoryNames.categoryList.map((entry, index) => (
-              <option key={index} value={entry}>
-                {entry}
-              </option>
-            ))}
+            {renderOptions()}
           </select>
           <button className="upload-btn" onClick={handleUpload}>Upload to Firebase</button>
           <Progress animated percent={categoryNames.percent} />
@@ -113,7 +132,7 @@ const Upload = () => {
             <h3>Delete Images</h3>
             <select className="delete-options" ref={deleteItems} onChange={handleModifyCategoryList}>
               <option value="" hidden>Select Category</option>
-              {renderOptions}
+              {renderOptions()}
             </select>
             <div className="delete-container">
               {renderImages()}
