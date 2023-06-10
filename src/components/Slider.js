@@ -3,6 +3,7 @@ import Image from './Image';
 import { useEffect, useRef, useState } from 'react';
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs';
 import { XLg } from 'react-bootstrap-icons';
+import { useSelector } from 'react-redux';
 
 function Slider() {
   const navigate = useNavigate();
