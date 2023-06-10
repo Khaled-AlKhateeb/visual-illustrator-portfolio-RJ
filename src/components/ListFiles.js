@@ -7,6 +7,7 @@ const ListFiles = () => {
   const dataArr = useSelector((state) => state.categoryData);
   const storedArray = dataArr.allImgs;
   const data = dataArr.allData;
+
   return (
     <div className='main-container'>
       {data.map((value, key) => {

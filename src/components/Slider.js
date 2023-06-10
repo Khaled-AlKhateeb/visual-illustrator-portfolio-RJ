@@ -2,8 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Image from './Image';
 import { useEffect, useRef, useState } from 'react';
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs';
-import { GrClose } from 'react-icons/gr';
-import { useSelector } from 'react-redux';
+import { XLg } from 'react-bootstrap-icons';
 
 function Slider() {
   const navigate = useNavigate();
@@ -89,7 +88,9 @@ function Slider() {
     <div className="slider-main-container" ref={buttonContainerRef}>
       {buttonsRef && (
         <>
-          <button className="slider-close" ref={(el) => buttonsRef.current.push(el)} onClick={sliderClose}><GrClose className="close-icon" /></button>
+          <button className="slider-close" onClick={sliderClose}>
+            <XLg className="close-icon" />
+          </button>
           <button className="next-slide" ref={(el) => buttonsRef.current.push(el)} onClick={nextImg}><BsChevronRight className="chev-right" /></button>
           <button className="prev-slide" ref={(el) => buttonsRef.current.push(el)} onClick={prevImg}><BsChevronLeft className="chev-left" /></button>
         </>

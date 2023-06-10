@@ -10,6 +10,7 @@ a:hover {
 body {
   font-family: "Quicksand", sans-serif;
   background-color: #dde1e7;
+  color: #3a523e;
 }
 
 .header-main-container {
@@ -377,6 +378,8 @@ body {
 
 .contact-title {
   font-size: 1.4rem;
+  line-height: 2rem;
+  color: #3a523e;
 }
 
 .contact-form {
@@ -390,7 +393,7 @@ body {
   border: none;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  width: 20%;
+  min-width: 30rem;
 }
 
 .textarea {
@@ -424,16 +427,19 @@ body {
 .slider-close {
   position: absolute;
   border: none;
-  right: 10px;
-  top: 10px;
-  width: 3rem;
-  height: 3rem;
+  right: 3rem;
+  top: 3rem;
+  width: 2rem;
+  height: 2rem;
+  transition: all 0.5s ease-in-out;
   background-color: transparent;
-  transition: all 0.5s ease-in-out ;
+  padding: 0;
 }
 
-.slider-close path {
-  stroke: #3a523e;
+.close-icon {
+  color: gray;
+  mix-blend-mode: difference;
+  font-size: 2rem;
 }
 
 .next-slide,
@@ -446,7 +452,7 @@ body {
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  transition: all 0.5s ease-in-out ;
+  transition: all 0.5s ease-in-out;
 }
 
 .next-slide {
@@ -462,6 +468,63 @@ body {
   font-size: 2rem;
   mix-blend-mode: difference;
   color: gray;
+}
+
+.about-main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-inline: 5rem;
+  padding-bottom: 3rem;
+}
+
+.about-containers-top,
+.about-containers {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  justify-content: center;
+  color: #3a523e;
+}
+
+.personal-img {
+  justify-self: flex-end;
+  width: 37.5%;
+  border-right: 1px solid #3a523e;
+  padding-right: 1rem;
+}
+
+.about-info-container {
+  padding-left: 1rem;
+  width: 50%;
+}
+
+.about-title {
+  font-size: 1.4rem;
+}
+.about-text-top,
+.about-text {
+  border-right: 1px solid #3a523e;
+  padding-top: 3rem;
+  padding-right: 1rem;
+  text-align: right;
+  margin-bottom: 0;
+}
+
+.work-container {
+  display: flex;
+}
+
+.work-img-top,
+.work-img {
+  padding-top: 3rem;
+  padding-left: 1rem;
+  width: 25%;
+}
+
+.text {
+  padding-top: 3rem;
+  padding-left: 1rem;
+  margin-bottom: 0;
 }
 
 @media screen and (max-width: 1000px) {
@@ -513,7 +576,7 @@ body {
   .category-container {
     padding: 0.75rem 0;
     gap: 0.75rem;
-    margin:  0;
+    margin: 0;
     width: 100vw;
   }
 
@@ -544,7 +607,116 @@ body {
     max-width: none;
   }
 
+  .slider-close {
+    position: absolute;
+    border: none;
+    right: 1rem;
+    top: 1rem;
+    width: 2rem;
+    height: 2rem;
+    transition: all 0.5s ease-in-out;
+    background-color: transparent;
+  }
+
   .artstation-btn {
+    width: 100%;
+  }
+
+  .about-main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 3rem;
+    margin: 1rem;
+    max-width: 500px;
+    margin: auto;
+  }
+
+  .about-containers-top {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .about-containers {
+    grid-template-columns: 20% 50%;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .personal-img {
+    justify-self: baseline;
+    width: 50%;
+    height: fit-content;
+    border-right: none;
+    padding-left: 1rem;
+    padding-right: 0;
+    padding-bottom: 1rem;
+  }
+
+  .about-info-container {
+    padding-inline: 1rem;
+    width: 50%;
+  }
+
+  .about-title {
+    font-size: 1.4rem;
+  }
+
+  .about-text-top {
+    padding-top: 0;
+    padding-left: 0;
+    width: 100%;
+  }
+
+  .work-img-top {
+    padding-top: 0;
+    padding-left: 1rem;
+    width: 40%;
+  }
+
+  .about-text-top,
+  .about-text {
+    width: fit-content;
+    justify-self: flex-end;
+  }
+
+  .work-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .work-img {
+    padding-top: 3rem;
+    padding-left: 1rem;
+    width: 40%;
+  }
+
+  .text {
+    padding-top: 1rem;
+    padding-left: 1rem;
+    margin-bottom: 0;
+  }
+
+  .contact-title {
+    font-size: 1.1rem;
+    line-height: 1.5rem;
+    color: #3a523e;
+  }
+
+  .form-input {
+    min-width: 20rem;
+  }
+}
+
+@media screen and (max-width: 500px ) {
+  .about-containers {
+    grid-template-columns: 30% 70%;
+    width: 100%;
+  }
+
+  .about-text {
     width: 100%;
   }
 }

@@ -1,7 +1,7 @@
 function Contact() {
   return (
     <div className="contact-main-container">
-      <h2 className="contact-title">Send a Message</h2>
+      <h2 className="contact-title">rami.mj@hotmail.com<br />or send a message:</h2>
       <form
         className="contact-form"
         action="https://formspree.io/f/moqzrvlk"
