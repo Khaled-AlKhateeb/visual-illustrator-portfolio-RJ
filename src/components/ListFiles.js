@@ -2,12 +2,15 @@ import React from 'react';
 import Image from './Image';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { db, doc, getDoc } from '../firebaseConfig';
 
 const ListFiles = () => {
   const dataArr = useSelector((state) => state.categoryData);
-  const data = Object.entries(dataArr?.allData);
-  const storedArray = dataArr?.allImgs;
-
+  //const allRef = doc(db, "Data", "allData");
+  //const allSnap = await getDoc(allRef);
+  //const allItem = allSnap.data();
+  //const storedArray = dataArr.allImgs;
+  console.log(dataArr);
   return (
     <div className='main-container'>
       {/*{data.map((value, key) => {

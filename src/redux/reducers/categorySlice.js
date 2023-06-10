@@ -4,34 +4,51 @@ import { ref, getStorage, app, getDownloadURL, uploadBytesResumable, deleteObjec
 const storage = getStorage(app);
 const storageDelete = getStorage();
 
-export const loaded = createAsyncThunk('categorySlice/loadData', async (payload, {dispatch}) => {
-  const docRef = doc(db, "Data", "newEntries");
+export const loaded = createAsyncThunk('categorySlice/loadData', async (payload, { dispatch }) => {
+  const docRef = doc(db, "newData", "newEntries");
   const allRef = doc(db, "Data", "allData");
   const docSnap = await getDoc(docRef);
   const allSnap = await getDoc(allRef);
   const docItem = docSnap.data();
   const allItem = allSnap.data();
-  const data = [];
 
-  await deleteDoc(doc(db, "Data", "allData"));
-
-  if (allItem) {
-    allItem.data.map((item) => { data.push(item); return null; })
-    if (data.some(item => Object.entries(item).some((value) => value[0] === 'name' && value[1] === docItem.name))) {
-      data.map((item) => {
-        if (item.name === docItem.name) {
-          if (!item.imgs.some(item => Object.entries(item).some((value) => value[0] === 'name' && value[1] === docItem.imgs[0].name))) {
-            item.imgs.push(docItem.imgs[0])
-          }
-        }
-        return null;
-      })
+  function pushObjectsIntoData(dataArray, newObject) {
+    if (!dataArray) {
+      return [newObject];
+    } else if (!newObject) {
+      return dataArray.data;
     } else {
-      data.push(docItem);
+      const newArray = dataArray.data
+      const categoryIndex = newArray.findIndex((data) => data.name === newObject.name);
+      if (categoryIndex !== -1) {
+        const existingCategory = newArray[categoryIndex];
+        const imgOrderIndex = existingCategory.imgs.findIndex((img) => img.order === newObject.imgs[0].order);
+        if (imgOrderIndex !== -1) {
+          for (let i = imgOrderIndex; i < existingCategory.imgs.length; i++) {
+            existingCategory.imgs[i].order++;
+          }
+          existingCategory.imgs.push(newObject.imgs[0]);
+        } else {
+          existingCategory.imgs.push(newObject.imgs[0]);
+        }
+        existingCategory.imgs.sort((a, b) => a.order - b.order);
+      } else {
+        const orderIndex = newArray.findIndex((data) => data.order === newObject.order);
+        if (orderIndex !== -1) {
+          for (let i = orderIndex; i < newArray.length; i++) {
+            newArray[i].order++;
+          }
+          newArray.push(newObject);
+        } else {
+          newArray.push(newObject);
+        }
+      }
+      newArray.sort((a, b) => a.order - b.order);
+      return newArray;
     }
-  } else {
-    data.push(docItem);
-  };
+  }
+
+  const data = pushObjectsIntoData(allItem, docItem);
 
   data.map((cat) => {
     dispatch(setCategoryList({ name: cat.name, order: cat.order }));
@@ -43,7 +60,7 @@ export const loaded = createAsyncThunk('categorySlice/loadData', async (payload,
   });
 
   await setDoc(doc(db, "Data", "allData"), { data });
-
+  await deleteDoc(doc(db, "newData", "newEntries"));
   return data;
 });
 
@@ -67,7 +84,7 @@ export const uploadImage = createAsyncThunk('categorySlice/uploadData', async (p
           dispatch(setUploadDone(''));
           dispatch(setCategoryInput(''));
           dispatch(setUploadSelectedCategory(''));
-          dispatch(fetchUrl({category, img, imgOrder}))
+          dispatch(fetchUrl({ category, img, imgOrder }))
         }, 4000);
       }
     },
@@ -82,19 +99,44 @@ export const fetchUrl = createAsyncThunk('categorySlice/fetchUrl', async (payloa
   const imageUrl = await getDownloadURL(ref(storage, `Data/${category}/${img.name}`));
   const categoryName = {
     name: category,
-    order: currentState.categoryOrder,
     imgs: [{
       name: img.name,
       order: imgOrder,
       url: imageUrl,
     }]
   };
-  await setDoc(doc(db, "Data", "newEntries"), categoryName);
+  categoryName.order = Number(currentState.categoryOrder);
+  categoryName.imgs[0].order = Number(imgOrder);
+  await setDoc(doc(db, "newData", "newEntries"), categoryName);
   dispatch(loaded());
 })
 
-export const imageDelete = createAsyncThunk('categorySlice/deleteData', async (payload, { dispatch }) => {
+export const imageDelete = createAsyncThunk('categorySlice/deleteData', async (payload, { dispatch, getState }) => {
   const { categoryName, imageName } = payload;
+  const allRef = doc(db, "Data", "allData");
+  const allSnap = await getDoc(allRef);
+  const allItem = allSnap.data();
+  function deleteFunction(dataArray, dCategoryName, imageName) {
+    console.log(dataArray);
+    const categoryIndex = dataArray.findIndex((data) => data.name === dCategoryName);
+    const categoryFind = dataArray[categoryIndex];
+    const selectedDeleteCategory = categoryFind.imgs;
+    const imageIndex = categoryFind.imgs.findIndex((img) => img.name === imageName);
+    console.log(selectedDeleteCategory, categoryIndex, categoryFind, imageIndex);
+    selectedDeleteCategory.splice(imageIndex, 1);
+    if (selectedDeleteCategory.length === 0) {
+      dataArray.splice(categoryIndex, 1);
+    } else {
+      categoryFind.imgs = selectedDeleteCategory;
+    }
+    console.log(dataArray);
+    return dataArray;
+  };
+
+  const data = deleteFunction(allItem.data, categoryName, imageName);
+
+  await setDoc(doc(db, "Data", "allData"), { data });
+
   const desertRef = ref(storageDelete, `/Data/${categoryName}/${imageName}`);
   deleteObject(desertRef).then(() => {
     dispatch(setUploadMessageText(`${imageName} deleted successfully`));
@@ -162,9 +204,7 @@ const categorySlice = createSlice({
       state.open = action.payload;
     },
     setAllImgs: (state, action) => {
-      if (!state.allImgs.length) {
-        state.allImgs.push(action.payload);
-      }
+      state.allImgs.push(action.payload);
     },
     setImgOrder: (state, action) => {
       state.imgOrder = action.payload;
