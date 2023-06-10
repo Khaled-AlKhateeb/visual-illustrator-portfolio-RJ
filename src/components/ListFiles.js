@@ -5,17 +5,17 @@ import { useSelector } from 'react-redux';
 
 const ListFiles = () => {
   const dataArr = useSelector((state) => state.categoryData);
-  const data = Object.entries(dataArr?.allData);
-  const storedArray = dataArr?.allImgs;
-
+  const storedArray = dataArr.allImgs;
+  const data = dataArr.allData;
   return (
     <div className='main-container'>
-      {/*{data.map((value, key) => {
+      {data.map((value, key) => {
+        console.log(value.name);
         return (
           <div key={key}>
-            <h2 className='category-title'>{value[0]}</h2>
+            <h2 className='category-title'>{value.name}</h2>
             <div className='category-container'>
-              {value[1].map((img, item) => {
+              {value.imgs.map((img, item) => {
                 return (
                   <Link
                     className='image-container'
@@ -30,7 +30,7 @@ const ListFiles = () => {
             </div>
           </div>
         )
-      })}*/}
+      })}
     </div >
   );
 }
