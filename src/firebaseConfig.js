@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, getDoc, setDoc, doc, deleteDoc } from "firebase/firestore";
 import {
   getStorage,
   listAll,
@@ -30,5 +30,9 @@ export {
   app,
   db,
   collection,
-  getDocs
+  getDocs,
+  setDoc,
+  doc,
+  getDoc,
+  deleteDoc
 };

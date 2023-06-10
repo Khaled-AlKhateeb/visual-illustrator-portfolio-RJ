@@ -13,7 +13,7 @@ function Slider() {
   }
 
   const imgName = location.state.name;
-  const allImgs = location.state.array;
+  const allImgs = useSelector((state) => state.categoryData.allImgs);
   const view = allImgs.findIndex((item) => item.name === imgName)
 
   const [currentIndex, setCurrentIndex] = useState(view);

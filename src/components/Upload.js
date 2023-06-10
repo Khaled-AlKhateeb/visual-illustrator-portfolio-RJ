@@ -1,25 +1,29 @@
-import { useState, useRef, useEffect } from 'react';
-import { getStorage, ref, uploadBytesResumable, deleteObject, app } from '../firebaseConfig';
+import { useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  uploadImage,
+  imageDelete,
+  setFile,
+  setUploadSelectedCategory,
+  setNewCategory,
+  setDeleteEntry,
+  setCategoryList,
+  setCategoryOrder,
+  setImgOrder
+} from '../redux/reducers/categorySlice';
+import AlertDialog from './DeleteConfirmation';
 import Progress from './ProgressBar';
 import '../../src/App.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteImage } from '../redux/reducers/categorySlice';
-import AlertDialog from './DeleteConfirmation';
 
 const Upload = () => {
-  const categoryNames = useSelector((state) => state.categoryData);
   const dispatch = useDispatch();
+  const categoryData = useSelector((state) => state.categoryData);
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [selectedEntry, setSelectedEntry] = useState('');
-  const [entryList, setEntryList] = useState([]);
-  const [file, setFile] = useState('');
-  const [percent, setPercent] = useState(0);
-  const [deleteName, setDeleteName] = useState('');
-  const [inputValue, setInputValue] = useState('');
-  const categoryInput = useRef(null);
-  const storage = getStorage(app);
-  const storageDelete = getStorage();
+  const categoryInputRef = useRef(null);
+  const categoryOrderInputRef = useRef(null);
+  const imgOrderInputRef = useRef(null);
+  const deleteItemsRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,105 +34,69 @@ const Upload = () => {
     }
   };
 
-  useEffect(() => {
-    const categorys = categoryNames.names.map((cat) => cat.name);
-    setEntryList(categorys);
-  }, [categoryNames]);
-
-  const handleChange = (event) => {
-    setFile(event.target.files[0]);
+  const handleImgOrder = (event) => {
+    dispatch(setImgOrder(event.target.value));
   };
 
-  const uploadDone = document.getElementById('uploadDone');
+  const handleSelectedImage = (event) => {
+    dispatch(setFile(event.target.files[0]));
+  };
 
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  }
+  const handleNewCategory = () => {
+    const newCategoryInput = categoryInputRef.current.value;
+    const newCategoryOrder = categoryOrderInputRef.current.value;
+    dispatch(setNewCategory(newCategoryInput));
+    dispatch(setCategoryOrder(newCategoryOrder));
+  };
+
+  const handleUploadCategory = () => {
+    if (!categoryInputRef.current.value || !categoryOrderInputRef.current.value) {
+      window.alert('Select category and order');
+    } else {
+      dispatch(setCategoryList({ name: categoryData.newCategory, order: categoryData.categoryOrder }));
+      dispatch(setNewCategory(''));
+      categoryOrderInputRef.current.value = '';
+    }
+  };
 
   const handleSelectChange = (event) => {
-    setSelectedEntry(event.target.value);
-  }
+    dispatch(setUploadSelectedCategory(event.target.value));
+  };
 
-  const handleCreateEntry = () => {
-    if (inputValue.trim() !== '') {
-      setEntryList([...entryList, inputValue]);
-      setInputValue('');
-      categoryInput.current.value = inputValue;
-    }
-  }
+  const handleUpload = () => {
+    dispatch(uploadImage({ category: categoryData.uploadSelectedCategory, img: categoryData.file, imgOrder: categoryData.imgOrder }));
+    imgOrderInputRef.current.value = '';
+  };
 
-  function handleUpload() {
-    if (!file) {
-      alert("Please choose a file first!")
-    }
+  const handleModifyCategoryList = () => {
+    dispatch(setDeleteEntry(deleteItemsRef.current.value));
+  };
 
-    const storageRef = ref(storage, `/Data/${selectedEntry}/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const percent = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-
-        setPercent(percent);
-        const delay = ms => new Promise(res => setTimeout(res, ms));
-        const resetPercent = async (percent) => {
-          await delay(2000);
-          if (percent === 100) {
-            setFile('');
-            setPercent(0);
-          };
-        }
-        if (percent === 100) {
-          uploadDone.innerHTML = 'Uploaded Successfully';
-          setTimeout(function () {
-            uploadDone.innerHTML = '';
-            categoryInput.current.value = '';
-            setSelectedEntry('');
-          }, 4000);
-        }
-        resetPercent(percent);
-      },
-      (err) => alert(err),
-    );
-  }
-
-  const deleteItems = useRef(null);
-
-  const handleNameSelect = () => {
-    setDeleteName(deleteItems.current.value);
-  }
-
-  const selectImageText = file.name ? file.name : 'Select Image';
-
-  const renderOptions = categoryNames.names.map((cat, index) => <option key={index} value={cat.name}>{cat.name}</option>);
-
-  const renderImages = categoryNames.names.map((item) => {
-    if (deleteName === item.name) {
-      return item.images.map((image, index) => {
+  const renderOptions = () =>
+    categoryData.categoryList.map((cat, index) => (
+      <option key={index} value={cat.name}>
+        {cat.name}
+      </option>
+    ));
+  const renderImages = () => {
+    const selectedCategory = categoryData.allData.find((category) => category.name === categoryData.deleteEntry);
+    if (selectedCategory) {
+      return selectedCategory.imgs.map((image, index) => {
         const handleDelete = () => {
-          const desertRef = ref(storageDelete, `/Data/${item.name}/${image.name}`);
-          deleteObject(desertRef).then(() => {
-            dispatch(deleteImage({ categoryName: item.name, imageName: image.name }));
-            uploadDone.innerHTML = `${image.name} deleted successfully`;
-            setTimeout(function () {
-              uploadDone.innerHTML = '';
-            }, 4000);
-          }).catch((err) => {
-            alert(err);
-          });
+          dispatch(imageDelete({ categoryName: categoryData.deleteEntry, imageName: image.name }));
         };
 
-        return <div key={index} className="delete-item-container">
-          <img className="delete-item" src={image.url} alt={image.name} />
-          <AlertDialog delete={handleDelete} />
-        </div>
+        return (
+          <div key={index} className="delete-item-container">
+            <img className="delete-item" src={image.url} alt={image.name} />
+            <AlertDialog delete={handleDelete} />
+          </div>
+        );
       });
     }
-    return null;
-  })
+  };
+
+  const selectImageText = categoryData.file ? categoryData.file.name : 'Select Image';
 
   return (
     <div className="upload-container">
@@ -137,28 +105,38 @@ const Upload = () => {
           <div>
             <h3>Upload Images</h3>
             <div className="create-container">
-              <input className="upload-category" type="text" value={inputValue} ref={categoryInput} onChange={handleInputChange} placeholder='New Category Name' />
-              <button className="add-category-btn" onClick={handleCreateEntry}>Create</button>
+              <input className="upload-category" type="text" value={categoryData.newCategory} ref={categoryInputRef} placeholder="New Category Name" onChange={handleNewCategory} />
+              <input className="category-order" type="number" min={1} ref={categoryOrderInputRef} placeholder="Order" onChange={handleNewCategory} />
+              <button className="add-category-btn" onClick={handleUploadCategory}>
+                Create
+              </button>
             </div>
-          </div><label className="upload-label" htmlFor="uploadInput">
-            {selectImageText}
-            <input className="upload-input" id="uploadInput" type="file" accept="" onChange={handleChange} />
-          </label><select className="delete-options" value={selectedEntry} onChange={handleSelectChange}>
+          </div>
+          <div className="create-container">
+            <label className="upload-label" htmlFor="uploadInput">
+              {selectImageText}
+              <input className="upload-input" id="uploadInput" type="file" accept="" onChange={handleSelectedImage} />
+            </label>
+            <input className="img-order" type="number" min={1} ref={imgOrderInputRef} onChange={handleImgOrder} placeholder="Order" />
+          </div>
+          <select className="delete-options" value={categoryData.uploadSelectedCategory} onChange={handleSelectChange}>
             <option value="" hidden>Select a Category</option>
-            {entryList.map((entry, index) => (
-              <option key={index} value={entry}>
-                {entry}
-              </option>
-            ))}
-          </select><button className="upload-btn" onClick={handleUpload}>Upload to Firebase</button><Progress animated percent={percent} /><p id='uploadDone' className="uploaded"></p><div className="delete-main-container">
+            {renderOptions()}
+          </select>
+          <button className="upload-btn" onClick={handleUpload}>
+            Upload to Firebase
+          </button>
+          <Progress animated percent={categoryData.percent} />
+          <p className={`uploaded ${categoryData.uploadDone ? '' : 'hidden'}`}>
+            {categoryData.uploadMessageText}
+          </p>
+          <div className="delete-main-container">
             <h3>Delete Images</h3>
-            <select className="delete-options" ref={deleteItems} onChange={handleNameSelect}>
+            <select className="delete-options" ref={deleteItemsRef} onChange={handleModifyCategoryList}>
               <option value="" hidden>Select Category</option>
-              {renderOptions}
+              {renderOptions()}
             </select>
-            <div className="delete-container">
-              {renderImages}
-            </div>
+            <div className="delete-container">{renderImages()}</div>
           </div>
         </>
       ) : (
@@ -172,12 +150,14 @@ const Upload = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button className="add-category-btn" type="submit">Submit</button>
+            <button className="add-category-btn" type="submit">
+              Submit
+            </button>
           </div>
         </form>
       )}
     </div>
   );
-}
+};
 
 export default Upload;

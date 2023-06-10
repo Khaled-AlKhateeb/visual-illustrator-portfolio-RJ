@@ -1,32 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from './Image';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const ListFiles = () => {
-  const data = useSelector((state) => state.categoryData);
-  const [storedArray, setStoredArray] = useState([]);
-
-  useEffect(() => {
-    const arr = [];
-    data.names.map((cat) => {
-      cat.images.map((img) => {
-        arr.push(img);
-        return null;
-      });
-      return null;
-    })
-    setStoredArray(arr);
-  }, [data.names]);
+  const dataArr = useSelector((state) => state.categoryData);
+  const storedArray = dataArr.allImgs;
+  const data = dataArr.allData;
 
   return (
     <div className='main-container'>
-      {data.names.map((cat, index) => {
+      {data.map((value, key) => {
+        console.log(value.name);
         return (
-          <div key={index}>
-            <h2 className='category-title'>{cat.name}</h2>
+          <div key={key}>
+            <h2 className='category-title'>{value.name}</h2>
             <div className='category-container'>
-              {cat.images.map((img, item) => {
+              {value.imgs.map((img, item) => {
                 return (
                   <Link
                     className='image-container'
@@ -42,7 +32,7 @@ const ListFiles = () => {
           </div>
         )
       })}
-    </div>
+    </div >
   );
 }
 
