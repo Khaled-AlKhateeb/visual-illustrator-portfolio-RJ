@@ -31,7 +31,7 @@ export const loaded = createAsyncThunk('categorySlice/loadData', async (payload,
         } else {
           existingCategory.imgs.push(newObject.imgs[0]);
         }
-        existingCategory.imgs.sort((a, b) => b.order - a.order);
+        existingCategory.imgs.sort((a, b) => a.order - b.order);
       } else {
         const orderIndex = newArray.findIndex((data) => data.order === newObject.order);
         if (orderIndex !== -1) {
@@ -43,7 +43,7 @@ export const loaded = createAsyncThunk('categorySlice/loadData', async (payload,
           newArray.push(newObject);
         }
       }
-      newArray.sort((a, b) => b.order - a.order);
+      newArray.sort((a, b) => a.order - b.order);
       return newArray;
     }
   }
