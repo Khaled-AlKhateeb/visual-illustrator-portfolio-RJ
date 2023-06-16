@@ -2,18 +2,20 @@ import { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   uploadImage,
-  imageDelete,
   setFile,
   setUploadSelectedCategory,
   setNewCategory,
   setDeleteEntry,
   setCategoryList,
   setCategoryOrder,
-  setImgOrder
+  setImgOrder,
+  setOpen,
+  setSelectDelete
 } from '../redux/reducers/categorySlice';
-import AlertDialog from './DeleteConfirmation';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Progress from './ProgressBar';
 import '../../src/App.css';
+import AlertDialog from './DeleteConfirmation';
 
 const Upload = () => {
   const dispatch = useDispatch();
@@ -82,14 +84,21 @@ const Upload = () => {
     const selectedCategory = categoryData.allData.find((category) => category.name === categoryData.deleteEntry);
     if (selectedCategory) {
       return selectedCategory.imgs.map((image, index) => {
-        const handleDelete = () => {
-          dispatch(imageDelete({ categoryName: categoryData.deleteEntry, imageName: image.name }));
+        const handleAlert = () => {
+          dispatch(setSelectDelete(image.name));
+          dispatch(setOpen(true));
         };
 
         return (
           <div key={index} className="delete-item-container">
             <img className="delete-item" src={image.url} alt={image.name} />
-            <AlertDialog delete={handleDelete} />
+            <button className='delete-btn' onClick={handleAlert}><DeleteIcon sx={{ fontSize: 40 }} /></button>
+            {categoryData.open && image.name === categoryData.selectDelete && (
+              <AlertDialog
+                category={categoryData.deleteEntry}
+                image={image.name}
+              />
+            )}
           </div>
         );
       });

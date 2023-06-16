@@ -1,42 +1,36 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setOpen } from '../redux/reducers/categorySlice';
+import { setOpen, imageDelete } from '../redux/reducers/categorySlice';
 
-export default function AlertDialog(props) {
+const AlertDialog = ({ category, image }) => {
   const dispatch = useDispatch();
-  const categoryNames = useSelector((state) => state.categoryData);
-  const handleClickOpen = () => {
-    dispatch(setOpen(true));
-  };
+  const categoryData = useSelector((state) => state.categoryData);
 
   const handleClose = () => {
     dispatch(setOpen(false));
   };
 
+  const handleDelete = () => {
+    dispatch(imageDelete({ categoryName: category, imageName: image }));
+  };
+
   return (
-    <div className="delete-confirmation" >
-      <button className="delete-btn" onClick={handleClickOpen}>
-        <DeleteIcon sx={{ fontSize: 40 }} />
-      </button>
-      <Dialog
+    <div className="delete-confirmation">
+      <div
         className="delete-dialog"
-        open={categoryNames.open}
+        open={categoryData.open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
       >
-        <DialogTitle id="alert-dialog-title">
+        <h3 id="alert-dialog-title">
           {"ARE YOU SURE?"}
-        </DialogTitle>
-        <DialogActions>
-          <Button onClick={handleClose}>cancel</Button>
-          <Button onClick={props.delete} autoFocus>delete</Button>
-        </DialogActions>
-      </Dialog>
+        </h3>
+        <div className="delete-btn-container">
+          <button className="delete-dialog-btn" onClick={handleClose}>cancel</button>
+          <button className="delete-dialog-btn" onClick={handleDelete} autoFocus>delete</button>
+        </div>
+      </div>
     </div>
   );
 }
+
+export default AlertDialog;

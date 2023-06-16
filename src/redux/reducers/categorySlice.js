@@ -117,7 +117,6 @@ export const imageDelete = createAsyncThunk('categorySlice/deleteData', async (p
   const allSnap = await getDoc(allRef);
   const allItem = allSnap.data();
   function deleteFunction(dataArray, dCategoryName, imageName) {
-    console.log(dataArray);
     const categoryIndex = dataArray.findIndex((data) => data.name === dCategoryName);
     const categoryFind = dataArray[categoryIndex];
     const selectedDeleteCategory = categoryFind.imgs;
@@ -129,7 +128,6 @@ export const imageDelete = createAsyncThunk('categorySlice/deleteData', async (p
     } else {
       categoryFind.imgs = selectedDeleteCategory;
     }
-    console.log(dataArray);
     return dataArray;
   };
 
@@ -167,7 +165,8 @@ const categorySlice = createSlice({
     allImgs: [],
     categoryOrder: 0,
     imgOrder: 0,
-    fetchUrl: {}
+    fetchUrl: {},
+    selectDelete: ''
   },
   reducers: {
     setPercent: (state, action) => {
@@ -189,6 +188,8 @@ const categorySlice = createSlice({
       state.categoryOrder = action.payload;
     },
     setCategoryList: (state, action) => {
+      const catExist = state.categoryList.findIndex((category) => category.name === action.payload.name);
+      if(catExist === -1 || state.categoryList.length === 0)
       state.categoryList.push(action.payload);
     },
     setDeleteEntry: (state, action) => {
@@ -208,6 +209,9 @@ const categorySlice = createSlice({
     },
     setImgOrder: (state, action) => {
       state.imgOrder = action.payload;
+    },
+    setSelectDelete: (state, action) => {
+      state.selectDelete = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -247,7 +251,9 @@ export const {
   categoryOrder,
   setCategoryOrder,
   imgOrder,
-  setImgOrder
+  setImgOrder,
+  selectDelete,
+  setSelectDelete
 } = categorySlice.actions;
 
 export default categorySlice.reducer;
