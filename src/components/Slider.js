@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 function Slider() {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const sliderClose = () => {
     navigate(-1);
   }
@@ -37,11 +37,11 @@ function Slider() {
 
   const buttonContainerRef = useRef(null);
   const buttonsRef = useRef([]);
-  
+
   useEffect(() => {
     let timeoutId;
     const buttonContainer = buttonContainerRef.current;
-    
+
     const hideButtons = () => {
       buttonsRef.current.map((el) => {
         if (el) {
@@ -50,7 +50,7 @@ function Slider() {
         return null;
       })
     };
-    
+
     const showButtons = () => {
       buttonsRef.current.map((el) => {
         if (el) {

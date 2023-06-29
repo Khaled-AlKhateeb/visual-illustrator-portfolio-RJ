@@ -359,7 +359,12 @@ body {
   display: inline-block;
   height: 20rem;
   text-align: center;
-  transition: all 0.1s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.image-container:hover {
+  opacity: 0.7;
+  height: 30rem;
 }
 
 .category-container {
@@ -382,10 +387,7 @@ body {
   height: 100%;
   width: 100%;
   object-fit: contain;
-}
-
-.image-container:hover {
-  opacity: 0.7;
+  background-color: #000000dd;
 }
 
 .category-title {
@@ -440,10 +442,11 @@ body {
 .slider-main-container {
   position: absolute;
   display: flex;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
   top: 0;
-  background-color: white;
+  background-color: transparent;
 }
 
 .slider-container {
@@ -454,8 +457,8 @@ body {
 .slider-close {
   position: absolute;
   border: none;
-  right: 3rem;
-  top: 3rem;
+  right: 1rem;
+  top: 1rem;
   width: 2rem;
   height: 2rem;
   transition: all 0.5s ease-in-out;
@@ -616,6 +619,10 @@ body {
     height: fit-content;
   }
 
+  .image-container:hover {
+    height: auto;
+  }
+
   .artwork-image {
     width: 100%;
     object-fit: contain;
@@ -628,7 +635,6 @@ body {
   }
 
   .slider-image {
-    height: auto;
     width: auto;
     max-height: 100vh;
     max-width: none;

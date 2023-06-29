@@ -11,22 +11,21 @@ const ListFiles = () => {
   return (
     <div className='main-container'>
       {data.map((value, key) => {
-        console.log(value.name);
         return (
           <div key={key}>
             <h2 className='category-title'>{value.name}</h2>
             <div className='category-container'>
               {value.imgs.map((img, item) => {
-                return (
-                  <Link
-                    className='image-container'
-                    to='/slider'
-                    key={item}
-                    state={{ name: img.name, array: storedArray }}
-                  >
-                    <Image imageUrl={img.url} imageName={img.name} class='artwork-image' />
-                  </Link>
-                )
+                  return (
+                    <Link
+                      className='image-container'
+                      to='/slider'
+                      key={item}
+                      state={{ name: img.name, array: storedArray }}
+                    >
+                      <Image imageUrl={img.url} imageName={img.name} class='artwork-image' />
+                    </Link>
+                  )  
               })}
             </div>
           </div>
