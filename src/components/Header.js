@@ -62,10 +62,10 @@ function Header() {
           <h4 className="position-title">Visual Development Artist</h4>
         </div>
         <div className="media-container">
-          <SocialIcon url='https://www.instagram.com/ramijuma/' bgColor='#00000000' fgColor='#3a523e' />
-          <SocialIcon url='https://www.linkedin.com/in/ramijuma/' bgColor='#00000000' fgColor='#3a523e' />
-          <a className="artstation-btn" href='https://www.artstation.com/ramijuma'>
-            <img className="artstation" src={artstation} alt='artstation logo' />
+          <SocialIcon url='https://www.instagram.com/ramijuma/' bgColor='#00000000' fgColor='#3a523e'  target="_blank"/>
+          <SocialIcon url='https://www.linkedin.com/in/ramijuma/' bgColor='#00000000' fgColor='#3a523e' target="_blank"/>
+          <a className="artstation-btn" href='https://www.artstation.com/ramijuma' target="_blank">
+            <img className="artstation" src={artstation} alt='artstation logo'/>
           </a>
         </div>
             </header>
